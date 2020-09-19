@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -35,16 +36,17 @@ public class SettingsActivity extends AppCompatActivity {
 
         FirebaseDatabase database = FirebaseDatabase.getInstance();
 
-       // userDatabase =database.getReference();//.child("Users"); //.child(current_uid) ;
+        userDatabase =database.getReference().child("Users").child(current_uid);
 
 
-      /*  userDatabase.addValueEventListener(new ValueEventListener() {
+
+        userDatabase.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                    String name = dataSnapshot.child("name").getValue().toString();
-                    String status = dataSnapshot.child("status").getValue().toString();
-
-                    uName.setText(name);
+                    String name =dataSnapshot.child("name").getValue().toString();
+                   String status =(String) dataSnapshot.child("status").getValue();
+             //   Log.d("TAG", "Name: " + name);
+                   uName.setText(name);
                     uStatus.setText(status);
             }
 
@@ -52,7 +54,7 @@ public class SettingsActivity extends AppCompatActivity {
             public void onCancelled(@NonNull DatabaseError databaseError) {
 
             }
-        });*/
+        });
 
 
     }
