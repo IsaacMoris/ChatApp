@@ -1,44 +1,75 @@
 package com.example.project;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.viewpager.widget.ViewPager;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
-import android.widget.Button;
+import android.view.Menu;
+import android.view.MenuItem;
+import com.google.android.material.tabs.TabLayout;
 
 import com.google.firebase.auth.FirebaseAuth;
 
 public class HomeActivity extends AppCompatActivity {
 
-    private  Button btnLogout;
-    private  Button accountSettingsbtn ;
     private  FirebaseAuth mFireBaseAuth;
     private FirebaseAuth.AuthStateListener mAuthStateListener;
+    private Toolbar homeBar;
+    private ViewPager homeViewPager;
+    private FragmentAdapter fragmentAdapter;
+    private TabLayout homeTabLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
-        btnLogout = findViewById(R.id.buttonLogout);
-        accountSettingsbtn = findViewById(R.id.home_settings_btn) ;
 
-        btnLogout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                FirebaseAuth.getInstance().signOut();
-                Intent intToMain = new Intent(HomeActivity.this , SignupActivity.class);
-                startActivity(intToMain);
-            }
-        });
+        homeBar = findViewById(R.id.homeBar);
+        setSupportActionBar(homeBar);
+        getSupportActionBar().setTitle("Teen Titans");
 
-        accountSettingsbtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent settingsIntent = new Intent(HomeActivity.this , SettingsActivity.class) ;
-                startActivity(settingsIntent);
-                finish();
-            }
-        });
+        fragmentAdapter = new FragmentAdapter(getSupportFragmentManager());
+        homeViewPager = findViewById(R.id.homeViewPager);
+        homeViewPager.setAdapter(fragmentAdapter);
+
+        homeTabLayout = findViewById(R.id.homeTabLayout);
+        homeTabLayout.setupWithViewPager(homeViewPager);
+
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu){
+        super.onCreateOptionsMenu(menu);
+        getMenuInflater().inflate(R.menu.main_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item){
+        Intent nextActivity;
+
+        if(item.getItemId() == R.id.allUsersMenuOption){
+            goToActivity(new AllUsersActivity());
+        }
+
+        else if(item.getItemId() == R.id.settingsMenuOption){
+            goToActivity(new SettingsActivity());
+        }
+
+        else if(item.getItemId() == R.id.logOutMenuOption){
+            FirebaseAuth.getInstance().signOut();
+            goToActivity(new LoginActivity());
+            finish();
+        }
+        return true;
+    }
+
+    private void goToActivity(AppCompatActivity destinationActivity){
+        Intent nextActivity = new Intent(HomeActivity.this, destinationActivity.getClass());
+        startActivity(nextActivity);
+
     }
 }
