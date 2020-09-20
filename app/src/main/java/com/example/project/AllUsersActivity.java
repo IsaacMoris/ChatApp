@@ -72,9 +72,9 @@ public class AllUsersActivity extends AppCompatActivity {
                                 holder.itemView.setOnClickListener(new View.OnClickListener() {
                                     @Override
                                     public void onClick(View v) {
-                                        //Intent friendChat = new Intent(UsersActivity.this, FriendChatActivity.class);
-                                        //friendChat.putExtra("user_id", friendsIDs);
-                                        //startActivity(friendChat);
+                                        Intent userProfAct = new Intent(AllUsersActivity.this, UserProfileActivity.class);
+                                        userProfAct.putExtra("userID", friendsIDs);
+                                        startActivity(userProfAct);
                                     }
                                 });
                             }
