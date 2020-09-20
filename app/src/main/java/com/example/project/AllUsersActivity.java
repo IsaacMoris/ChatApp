@@ -43,6 +43,8 @@ public class AllUsersActivity extends AppCompatActivity {
         usersList.setHasFixedSize(true);
         usersList.setLayoutManager(new LinearLayoutManager(this));
 
+        mAuth = FirebaseAuth.getInstance();
+        userId = mAuth.getCurrentUser().getUid();
         usersDataBase = FirebaseDatabase.getInstance().getReference().child("Users");
 
 
@@ -64,11 +66,15 @@ public class AllUsersActivity extends AppCompatActivity {
                         usersDataBase.child(friendsIDs).addValueEventListener(new ValueEventListener() {
                             @Override
                             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                final String id = snapshot.getKey().toString();
                                 final String name = snapshot.child("name").getValue().toString();
                                 final String status = snapshot.child("status").getValue().toString();
                                 holder.name.setText(name);
                                 holder.status.setText(status);
+
+                                if(friendsIDs.equals(userId)){
+                                    holder.status.setText("You");
+                                    return;
+                                }
                                 holder.itemView.setOnClickListener(new View.OnClickListener() {
                                     @Override
                                     public void onClick(View v) {
