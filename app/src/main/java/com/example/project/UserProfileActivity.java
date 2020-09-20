@@ -60,6 +60,7 @@ public class UserProfileActivity extends AppCompatActivity {
         mProfileStatus = (TextView)findViewById(R.id.profileStatus);
         mProfileCount = (TextView)findViewById(R.id.totalFriends);
         mSendRequestBtn = (Button)findViewById(R.id.sendRequestBtn);
+        mProfileImg = (ImageView)findViewById(R.id.profileImg);
 
         mProgressDialog = new ProgressDialog(this);
         mProgressDialog.setTitle("Loading User Data");
