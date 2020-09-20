@@ -10,24 +10,24 @@
         android:id="@+id/singleUserStatus"
         android:layout_width="wrap_content"
         android:layout_height="33dp"
-        android:layout_marginTop="52dp"
-        android:layout_marginEnd="124dp"
-        android:layout_marginRight="124dp"
+        android:layout_marginTop="8dp"
         android:text="Hey, I am Using Teen Titans"
         android:textColor="#372C2C"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintHorizontal_bias="0.056"
+        app:layout_constraintStart_toStartOf="@+id/guideline8"
+        app:layout_constraintTop_toBottomOf="@+id/singleUserName" />
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/singleUserImage"
-        android:layout_width="77dp"
-        android:layout_height="78dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginRight="16dp"
+        android:layout_width="78dp"
+        android:layout_height="82dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="15dp"
+        android:layout_marginBottom="16dp"
         android:src="@drawable/user_default_image"
-        app:layout_constraintEnd_toStartOf="@+id/guideline8"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/guideline8" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline8"
@@ -49,13 +49,13 @@
         android:id="@+id/singleUserName"
         android:layout_width="wrap_content"
         android:layout_height="31dp"
-        android:layout_marginTop="12dp"
-        android:layout_marginEnd="36dp"
-        android:layout_marginRight="36dp"
+        android:layout_marginTop="16dp"
         android:text="Name"
         android:textColor="#0E0E0E"
         android:textSize="18sp"
         app:layout_constraintEnd_toStartOf="@+id/guideline9"
+        app:layout_constraintHorizontal_bias="0.17"
+        app:layout_constraintStart_toStartOf="@+id/guideline8"
         app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
