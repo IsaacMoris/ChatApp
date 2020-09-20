@@ -29,7 +29,7 @@ public class UserProfileActivity extends AppCompatActivity {
 
     private ImageView mProfileImg;
     private TextView mProfileName, mProfileStatus, mProfileCount;
-    private Button mSendRequestBtn;
+    private Button mSendRequestBtn, mRejectRequestBtn;
 
     private int mRelationState; // 0 is not friends
                                 // 1 sent req
@@ -60,6 +60,9 @@ public class UserProfileActivity extends AppCompatActivity {
         mProfileStatus = (TextView)findViewById(R.id.profileStatus);
         mProfileCount = (TextView)findViewById(R.id.totalFriends);
         mSendRequestBtn = (Button)findViewById(R.id.sendRequestBtn);
+        mRejectRequestBtn = (Button)findViewById(R.id.rejectRequestBtn);
+        if(mRelationState == 2)
+            mRejectRequestBtn.setVisibility(View.VISIBLE);
         mProfileImg = (ImageView)findViewById(R.id.profileImg);
 
         mProgressDialog = new ProgressDialog(this);
@@ -83,11 +86,11 @@ public class UserProfileActivity extends AppCompatActivity {
                         if(snapshot.hasChild(userID)){
                             String Request_Type = snapshot.child(userID).child("Request_Type").getValue().toString();
                             if(Request_Type.equals("sent")){
-                                mRelationState = 1;
-                                mSendRequestBtn.setText("Cancel Friend Request");
-                            } else if(Request_Type.equals("received")){
                                 mRelationState = 2;
                                 mSendRequestBtn.setText("Accept Friend Request");
+                            } else if(Request_Type.equals("received")){
+                                mRelationState = 1;
+                                mSendRequestBtn.setText("Cancel Friend Request");
                             }
                         }
 
@@ -107,6 +110,31 @@ public class UserProfileActivity extends AppCompatActivity {
             }
         });
 
+        mRejectRequestBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mFriendReqDB.child(mCurrentUser.getUid()).child(userID).removeValue().addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if(task.isSuccessful()){
+                            mFriendReqDB.child(userID).child(mCurrentUser.getUid()).removeValue().addOnSuccessListener(new OnSuccessListener<Void>() {
+                                @Override
+                                public void onSuccess(Void aVoid) {
+                                    Toast.makeText(UserProfileActivity.this, "Friend request cancelled successfully", Toast.LENGTH_SHORT);
+
+                                    mRelationState = 0;
+                                    mSendRequestBtn.setText("Send Friend Request");
+                                    mRejectRequestBtn.setVisibility(View.INVISIBLE);
+                                }
+                            });
+                        }else{
+                            Toast.makeText(UserProfileActivity.this, "Failed to cancel friend request", Toast.LENGTH_SHORT);
+                        }
+                    }
+                });
+            }
+        });
+
         mSendRequestBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -114,11 +142,11 @@ public class UserProfileActivity extends AppCompatActivity {
 
                 switch (mRelationState){
                     case 0: // Send Request -------------------------->
-                        mFriendReqDB.child(mCurrentUser.getUid()).child(userID).child("Request_Type").setValue("sent").addOnCompleteListener(new OnCompleteListener<Void>() {
+                        mFriendReqDB.child(mCurrentUser.getUid()).child(userID).child("Request_Type").setValue("received").addOnCompleteListener(new OnCompleteListener<Void>() {
                             @Override
                             public void onComplete(@NonNull Task<Void> task) {
                                 if(task.isSuccessful()){
-                                    mFriendReqDB.child(userID).child(mCurrentUser.getUid()).child("Request_Type").setValue("received").addOnSuccessListener(new OnSuccessListener<Void>() {
+                                    mFriendReqDB.child(userID).child(mCurrentUser.getUid()).child("Request_Type").setValue("sent").addOnSuccessListener(new OnSuccessListener<Void>() {
                                         @Override
                                         public void onSuccess(Void aVoid) {
                                             Toast.makeText(UserProfileActivity.this, "Friend request sent successfully", Toast.LENGTH_SHORT);
@@ -155,7 +183,7 @@ public class UserProfileActivity extends AppCompatActivity {
                             }
                         });
                         break;
-                    case 2: // Accept/Reject Request -------------------------->
+                    case 2: // Accept Request -------------------------->
                         final String curDate = DateFormat.getDateTimeInstance().format(new Date());
 
                         mFriendsDB.child(mCurrentUser.getUid()).child(userID).setValue(curDate).addOnCompleteListener(new OnCompleteListener<Void>() {
@@ -193,6 +221,26 @@ public class UserProfileActivity extends AppCompatActivity {
                             }
                         });
                         break;
+                    case 3:
+                        mFriendsDB.child(mCurrentUser.getUid()).child(userID).removeValue().addOnCompleteListener(new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
+                                if(task.isSuccessful()){
+                                    mFriendsDB.child(userID).child(mCurrentUser.getUid()).removeValue().addOnSuccessListener(new OnSuccessListener<Void>() {
+                                        @Override
+                                        public void onSuccess(Void aVoid) {
+                                            Toast.makeText(UserProfileActivity.this, "Friend removed successfully", Toast.LENGTH_SHORT);
+
+                                            mRelationState = 0;
+                                            mSendRequestBtn.setText("Send Friend Request");
+                                            //mSendRequestBtn.setEnabled(true);
+                                        }
+                                    });
+                                }else{
+                                    Toast.makeText(UserProfileActivity.this, "Failed to remove friend", Toast.LENGTH_SHORT);
+                                }
+                            }
+                        });
                 }
                 mSendRequestBtn.setEnabled(true);
             }
