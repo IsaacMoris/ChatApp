@@ -15,25 +15,23 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-
-import java.util.HashMap;
 
 public class SignupActivity extends AppCompatActivity {
-    private EditText email , pass;
-    private Button btnSign;
-    private  TextView signin;
-    private FirebaseAuth iFirebaseAuth;
-    private DatabaseReference userDatabase;
+    EditText email , pass;
+    Button btnSign;
+    TextView signin;
+    FirebaseAuth iFirebaseAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_signup);
 
-        intitalize();
+        iFirebaseAuth = FirebaseAuth.getInstance();
+        email = findViewById(R.id.TextEmailAddress);
+        pass = findViewById(R.id.TextPassword);
+        btnSign = findViewById(R.id.buttonSign);
+        signin = findViewById(R.id.textView);
 
         btnSign.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -65,15 +63,6 @@ public class SignupActivity extends AppCompatActivity {
                             }
                             else
                             {
-                                FirebaseUser current_user=FirebaseAuth.getInstance().getCurrentUser();
-                                String uid=current_user.getUid() ;
-                                userDatabase= FirebaseDatabase.getInstance().getReference().child("Users").child(uid);
-
-                                HashMap<String , String> hashMap = new HashMap<>() ;
-                                hashMap.put("name" , "No Name");
-                                hashMap.put("status" , "Hey there , i'm using Titans chat") ;
-                                hashMap.put("image" , "Empty") ;
-                                userDatabase.setValue(hashMap);
                                 startActivity(new Intent(SignupActivity.this , HomeActivity.class));
                             }
                         }
@@ -95,13 +84,5 @@ public class SignupActivity extends AppCompatActivity {
             }
         });
 
-    }
-    private void intitalize()
-    {
-        iFirebaseAuth = FirebaseAuth.getInstance();
-        email = findViewById(R.id.TextEmailAddress);
-        pass = findViewById(R.id.TextPassword);
-        btnSign = findViewById(R.id.buttonSign);
-        signin = findViewById(R.id.textView);
     }
 }
