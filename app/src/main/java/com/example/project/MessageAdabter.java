@@ -82,7 +82,9 @@ public class MessageAdabter extends RecyclerView.Adapter<MessageAdabter.MessageV
             public void onDataChange(DataSnapshot dataSnapshot) {
 
                 //String name = dataSnapshot.child("userName").getValue().toString();
-                String image = dataSnapshot.child("image").getValue().toString();
+                String image="Empty";
+                if(dataSnapshot.child("image").exists())
+                 image = dataSnapshot.child("image").getValue().toString();
 
                 //  viewHolder.displayName.setText(name);
                 if(!image.equals("Empty"))
