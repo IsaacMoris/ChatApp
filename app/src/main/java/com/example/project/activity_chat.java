@@ -18,6 +18,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -47,6 +48,9 @@ public class activity_chat extends AppCompatActivity {
     RecyclerView ViewMessageList;
     LinearLayoutManager linearLayoutManager;
     MessageAdabter messageAdabter;
+    FirebaseAuth firebaseAuth;
+    ImageButton back_button;
+    String sourceActivity;
 
     public static String getmChatuser() {
         return mChatuser;
@@ -69,10 +73,12 @@ public class activity_chat extends AppCompatActivity {
         linearLayoutManager=new LinearLayoutManager(this);
         ViewMessageList.setHasFixedSize(true);
         ViewMessageList.setLayoutManager(linearLayoutManager);
-        //tmp data
+
 
         mChatuser=intent.getStringExtra("user_id");
-        mCurrentUserId="2nbJEpPQbPSnsAwTpunCzB9Xbi62";
+        firebaseAuth=FirebaseAuth.getInstance();
+        mCurrentUserId=firebaseAuth.getUid();
+        sourceActivity=intent.getStringExtra("source");
 
         // writing and sending messages
         chat_message_view=(EditText) findViewById(R.id.chat_message_view);
@@ -82,6 +88,8 @@ public class activity_chat extends AppCompatActivity {
         Title_view=(TextView) findViewById(R.id.custom_bar_title);
         Last_seen_view=(TextView) findViewById(R.id.custom_bar_seen);
         profileImage=(CircleImageView) findViewById(R.id.custom_bar_image);
+        back_button=findViewById(R.id.back_button);
+
         mRootRef = FirebaseDatabase.getInstance().getReference();
         messageAdabter=new MessageAdabter(messageList);
         ViewMessageList.setAdapter(messageAdabter);
@@ -122,6 +130,16 @@ loadUserData(mChatuser);
                 //userNameText.setText("");
             }
         });
+       back_button.setOnClickListener(new View.OnClickListener() {
+           @Override
+           public void onClick(View view) {
+               Intent intent;
+               if(sourceActivity.equals("FriendsFragment"))
+               intent=new Intent(activity_chat.this,FriendsFragment.class);
+               else   intent=new Intent(activity_chat.this,ChatFragment.class);
+               startActivity(intent);
+           }
+       });
 
     }
 

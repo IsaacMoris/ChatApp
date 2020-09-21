@@ -123,6 +123,7 @@ public class FriendsFragment extends Fragment {
                                         public void onClick(View v) {
                                             Intent friendChat = new Intent(getActivity(), activity_chat.class);
                                             friendChat.putExtra("user_id", friendsIDs);
+                                            friendChat.putExtra("source", "FriendsFragment");
                                             startActivity(friendChat);
                                         }
                                     });
