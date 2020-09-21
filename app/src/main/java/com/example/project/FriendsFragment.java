@@ -112,7 +112,7 @@ public class FriendsFragment extends Fragment {
                             @Override
                             public void onDataChange(@NonNull DataSnapshot snapshot) {
                                 final String name = snapshot.child("name").getValue().toString();
-                                if(snapshot.child("image").getValue()!="default")
+                                if(!snapshot.child("image").getValue().equals("default"))
                                 {
                                     String image = snapshot.child("image").getValue().toString();
                                     Picasso.get().load(image).into(holder.profileImage);

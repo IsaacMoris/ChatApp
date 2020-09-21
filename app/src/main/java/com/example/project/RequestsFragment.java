@@ -124,7 +124,7 @@ public class RequestsFragment extends Fragment {
                                             holder.status.setTextColor(Color.parseColor("#105F98"));
                                         }
 
-                                if(snapshot.child("image").getValue()!="default")
+                                if(!snapshot.child("image").getValue().equals("default"))
                                 {
                                     String image = snapshot.child("image").getValue().toString();
                                     Picasso.get().load(image).into(holder.profileImage);

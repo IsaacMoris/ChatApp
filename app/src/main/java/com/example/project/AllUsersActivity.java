@@ -70,7 +70,7 @@ public class AllUsersActivity extends AppCompatActivity {
                                 final String name = snapshot.child("name").getValue().toString();
                                 final String status = snapshot.child("status").getValue().toString();
 
-                                if(snapshot.child("image").getValue()!="default")
+                                if(!snapshot.child("image").getValue().equals("default"))
                                 {
                                     String image = snapshot.child("image").getValue().toString();
                                     Picasso.get().load(image).into(holder.profileImage);
