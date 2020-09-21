@@ -7,6 +7,7 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
@@ -17,6 +18,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -46,6 +48,8 @@ public class activity_chat extends AppCompatActivity {
     RecyclerView ViewMessageList;
     LinearLayoutManager linearLayoutManager;
     MessageAdabter messageAdabter;
+    private FirebaseAuth mAuth;
+
 
     public static String getmChatuser() {
         return mChatuser;
@@ -60,16 +64,19 @@ public class activity_chat extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat);
         //mChatToolBar= findViewById(R.id.Custom_bar);
+        Intent intent=getIntent();
+        mAuth=FirebaseAuth.getInstance();
 
-       messageList=new ArrayList<>();
+
+        messageList=new ArrayList<>();
         ViewMessageList=(RecyclerView) findViewById(R.id.messages_list);
         linearLayoutManager=new LinearLayoutManager(this);
         ViewMessageList.setHasFixedSize(true);
         ViewMessageList.setLayoutManager(linearLayoutManager);
         //tmp data
 
-        mChatuser="HSPhvfrPzARGIQLJ1PkkXbZZALs1";
-        mCurrentUserId="2nbJEpPQbPSnsAwTpunCzB9Xbi62";
+        mChatuser=intent.getStringExtra("user_id");
+        mCurrentUserId=mAuth.getCurrentUser().getUid();
 
         // writing and sending messages
         chat_message_view=(EditText) findViewById(R.id.chat_message_view);
@@ -102,7 +109,7 @@ public class activity_chat extends AppCompatActivity {
                 if(time==-1){
                     Last_seen_view.setText("Have not opened this chat before");
                 }else
-                Last_seen_view.setText(time_ago.getTimeAgo(time));
+                    Last_seen_view.setText(time_ago.getTimeAgo(time));
             }
 
             @Override
@@ -111,11 +118,11 @@ public class activity_chat extends AppCompatActivity {
             }
         });
 
-loadUserData(mChatuser);
-       send_btn.setOnClickListener(new View.OnClickListener() {
+        loadUserData(mChatuser);
+        send_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-               sendMessage();
+                sendMessage();
                 //userNameText.setText("");
             }
         });
@@ -203,22 +210,22 @@ loadUserData(mChatuser);
 
     }
     public void loadUserData(String userid){
-      mRootRef.child("Users").child(userid).addValueEventListener(new ValueEventListener() {
-          @Override
-          public void onDataChange(@NonNull DataSnapshot snapshot) {
-              String image=snapshot.child("image").getValue(String.class);
-              String name=snapshot.child("name").getValue(String.class);
-              if(!image.equals("Empty"))
-              Picasso.get().load(image).into(profileImage);
-              Title_view.setText(name);
+        mRootRef.child("Users").child(userid).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                String image=snapshot.child("image").getValue(String.class);
+                String name=snapshot.child("name").getValue(String.class);
+                if(!image.equals("Empty"))
+                    Picasso.get().load(image).into(profileImage);
+                Title_view.setText(name);
 
-          }
+            }
 
-          @Override
-          public void onCancelled(@NonNull DatabaseError error) {
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
 
-          }
-      });
+            }
+        });
 
 
     }

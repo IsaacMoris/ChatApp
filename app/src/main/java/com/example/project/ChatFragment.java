@@ -1,5 +1,6 @@
 package com.example.project;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -113,9 +114,9 @@ public class ChatFragment extends Fragment {
                                 holder.itemView.setOnClickListener(new View.OnClickListener() {
                                     @Override
                                     public void onClick(View v) {
-                                        //Intent friendChat = new Intent(UsersActivity.this, FriendChatActivity.class);
-                                        //friendChat.putExtra("user_id", friendsIDs);
-                                        //startActivity(friendChat);
+                                        Intent friendChat = new Intent(getActivity(), activity_chat.class);
+                                        friendChat.putExtra("user_id", friendsIDs);
+                                        startActivity(friendChat);
                                     }
                                 });
                             }
