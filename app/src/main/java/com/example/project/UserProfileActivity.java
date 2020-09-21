@@ -61,8 +61,7 @@ public class UserProfileActivity extends AppCompatActivity {
         mProfileCount = (TextView)findViewById(R.id.totalFriends);
         mSendRequestBtn = (Button)findViewById(R.id.sendRequestBtn);
         mRejectRequestBtn = (Button)findViewById(R.id.rejectRequestBtn);
-        if(mRelationState == 2)
-            mRejectRequestBtn.setVisibility(View.VISIBLE);
+        mRejectRequestBtn.setVisibility(View.INVISIBLE);
         mProfileImg = (ImageView)findViewById(R.id.profileImg);
 
         mProgressDialog = new ProgressDialog(this);
@@ -88,10 +87,26 @@ public class UserProfileActivity extends AppCompatActivity {
                             if(Request_Type.equals("sent")){
                                 mRelationState = 2;
                                 mSendRequestBtn.setText("Accept Friend Request");
+                                mRejectRequestBtn.setVisibility(View.VISIBLE);
                             } else if(Request_Type.equals("received")){
                                 mRelationState = 1;
                                 mSendRequestBtn.setText("Cancel Friend Request");
                             }
+                        } else {
+                            mFriendsDB.child(mCurrentUser.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                    if(snapshot.hasChild(userID)){
+                                        mRelationState = 3;
+                                        mSendRequestBtn.setText("Unfriend");
+                                    }
+                                }
+
+                                @Override
+                                public void onCancelled(@NonNull DatabaseError error) {
+
+                                }
+                            });
                         }
 
                         mProgressDialog.dismiss();
@@ -124,7 +139,6 @@ public class UserProfileActivity extends AppCompatActivity {
 
                                     mRelationState = 0;
                                     mSendRequestBtn.setText("Send Friend Request");
-                                    mRejectRequestBtn.setVisibility(View.INVISIBLE);
                                 }
                             });
                         }else{
@@ -243,6 +257,7 @@ public class UserProfileActivity extends AppCompatActivity {
                         });
                 }
                 mSendRequestBtn.setEnabled(true);
+                mRejectRequestBtn.setVisibility(View.INVISIBLE);
             }
         });
     }
