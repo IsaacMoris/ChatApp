@@ -84,7 +84,7 @@ public class UserProfileActivity extends AppCompatActivity {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         if(snapshot.hasChild(userID)){
-                            String Request_Type = snapshot.child(userID).child("Request_Type").getValue().toString();
+                            String Request_Type = snapshot.child(userID).child("request_type").getValue().toString();
                             if(Request_Type.equals("sent")){
                                 mRelationState = 2;
                                 mSendRequestBtn.setText("Accept Friend Request");
@@ -142,11 +142,11 @@ public class UserProfileActivity extends AppCompatActivity {
 
                 switch (mRelationState){
                     case 0: // Send Request -------------------------->
-                        mFriendReqDB.child(mCurrentUser.getUid()).child(userID).child("Request_Type").setValue("received").addOnCompleteListener(new OnCompleteListener<Void>() {
+                        mFriendReqDB.child(mCurrentUser.getUid()).child(userID).child("request_type").setValue("received").addOnCompleteListener(new OnCompleteListener<Void>() {
                             @Override
                             public void onComplete(@NonNull Task<Void> task) {
                                 if(task.isSuccessful()){
-                                    mFriendReqDB.child(userID).child(mCurrentUser.getUid()).child("Request_Type").setValue("sent").addOnSuccessListener(new OnSuccessListener<Void>() {
+                                    mFriendReqDB.child(userID).child(mCurrentUser.getUid()).child("request_type").setValue("sent").addOnSuccessListener(new OnSuccessListener<Void>() {
                                         @Override
                                         public void onSuccess(Void aVoid) {
                                             Toast.makeText(UserProfileActivity.this, "Friend request sent successfully", Toast.LENGTH_SHORT);
@@ -186,11 +186,11 @@ public class UserProfileActivity extends AppCompatActivity {
                     case 2: // Accept Request -------------------------->
                         final String curDate = DateFormat.getDateTimeInstance().format(new Date());
 
-                        mFriendsDB.child(mCurrentUser.getUid()).child(userID).setValue(curDate).addOnCompleteListener(new OnCompleteListener<Void>() {
+                        mFriendsDB.child(mCurrentUser.getUid()).child(userID).child("date").setValue(curDate).addOnCompleteListener(new OnCompleteListener<Void>() {
                             @Override
                             public void onComplete(@NonNull Task<Void> task) {
                                 if(task.isSuccessful()){
-                                    mFriendsDB.child(userID).child(mCurrentUser.getUid()).setValue(curDate).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                    mFriendsDB.child(userID).child(mCurrentUser.getUid()).child("date").setValue(curDate).addOnSuccessListener(new OnSuccessListener<Void>() {
                                         @Override
                                         public void onSuccess(Void aVoid) {
                                             //Remove The Request

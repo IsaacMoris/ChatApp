@@ -7,6 +7,7 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
@@ -60,6 +61,8 @@ public class activity_chat extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat);
         //mChatToolBar= findViewById(R.id.Custom_bar);
+        Intent intent=getIntent();
+
 
        messageList=new ArrayList<>();
         ViewMessageList=(RecyclerView) findViewById(R.id.messages_list);
@@ -68,7 +71,7 @@ public class activity_chat extends AppCompatActivity {
         ViewMessageList.setLayoutManager(linearLayoutManager);
         //tmp data
 
-        mChatuser="HSPhvfrPzARGIQLJ1PkkXbZZALs1";
+        mChatuser=intent.getStringExtra("user_id");
         mCurrentUserId="2nbJEpPQbPSnsAwTpunCzB9Xbi62";
 
         // writing and sending messages
