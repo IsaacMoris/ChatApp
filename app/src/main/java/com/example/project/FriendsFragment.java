@@ -20,6 +20,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.squareup.picasso.Picasso;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -111,15 +112,20 @@ public class FriendsFragment extends Fragment {
                             @Override
                             public void onDataChange(@NonNull DataSnapshot snapshot) {
                                 final String name = snapshot.child("name").getValue().toString();
+                                if(snapshot.child("image").getValue()!="default")
+                                {
+                                    String image = snapshot.child("image").getValue().toString();
+                                    Picasso.get().load(image).into(holder.profileImage);
+                                }
                                 holder.name.setText(name);
-                                holder.itemView.setOnClickListener(new View.OnClickListener() {
-                                    @Override
-                                    public void onClick(View v) {
-                                        Intent friendChat = new Intent(getActivity(), activity_chat.class);
-                                        friendChat.putExtra("user_id", friendsIDs);
-                                        startActivity(friendChat);
-                                    }
-                                });
+                                    holder.itemView.setOnClickListener(new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View v) {
+                                            Intent friendChat = new Intent(getActivity(), activity_chat.class);
+                                            friendChat.putExtra("user_id", friendsIDs);
+                                            startActivity(friendChat);
+                                        }
+                                    });
                             }
 
                             @Override
