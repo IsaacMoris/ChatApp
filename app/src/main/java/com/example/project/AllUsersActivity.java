@@ -21,6 +21,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.squareup.picasso.Picasso;
 
 public class AllUsersActivity extends AppCompatActivity {
 
@@ -68,8 +69,14 @@ public class AllUsersActivity extends AppCompatActivity {
                             public void onDataChange(@NonNull DataSnapshot snapshot) {
                                 final String name = snapshot.child("name").getValue().toString();
                                 final String status = snapshot.child("status").getValue().toString();
-                                holder.name.setText(name);
-                                holder.status.setText(status);
+
+                                if(snapshot.child("image").getValue()!="default")
+                                {
+                                    String image = snapshot.child("image").getValue().toString();
+                                    Picasso.get().load(image).into(holder.profileImage);
+                                }
+                                    holder.name.setText(name);
+                                    holder.status.setText(status);
 
                                 if(friendsIDs.equals(userId)){
                                     holder.status.setText("You");

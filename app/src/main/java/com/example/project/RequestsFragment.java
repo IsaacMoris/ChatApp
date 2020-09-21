@@ -21,6 +21,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.squareup.picasso.Picasso;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -123,6 +124,11 @@ public class RequestsFragment extends Fragment {
                                             holder.status.setTextColor(Color.parseColor("#105F98"));
                                         }
 
+                                if(snapshot.child("image").getValue()!="default")
+                                {
+                                    String image = snapshot.child("image").getValue().toString();
+                                    Picasso.get().load(image).into(holder.profileImage);
+                                }
 
                                 holder.itemView.setOnClickListener(new View.OnClickListener() {
                                     @Override
