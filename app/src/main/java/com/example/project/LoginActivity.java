@@ -76,6 +76,7 @@ public class LoginActivity extends AppCompatActivity {
                             else{
                                 Intent intToHome = new Intent(LoginActivity.this,HomeActivity.class);
                                 startActivity(intToHome);
+                                finish();
                             }
                         }
                     });
