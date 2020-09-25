@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".StartUp">
+
+    <ImageView
+        android:id="@+id/background"
+        android:layout_width="551dp"
+        android:layout_height="857dp"
+        android:contentDescription="@string/Backgroud"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0"
+        app:srcCompat="@drawable/bg" />
+
+    <ImageView
+        android:id="@+id/clouds"
+        android:layout_width="393dp"
+        android:layout_height="334dp"
+        android:layout_marginTop="104dp"
+        android:layout_marginBottom="293dp"
+        android:contentDescription="@string/cloudspic"
+        android:padding="50dp"
+        app:layout_constraintBottom_toBottomOf="@id/background"
+        app:layout_constraintEnd_toEndOf="@id/background"
+        app:layout_constraintStart_toStartOf="@id/background"
+        app:layout_constraintTop_toTopOf="@id/background"
+        app:srcCompat="@drawable/layer_1" />
+
+    <Button
+        android:id="@+id/SignIn"
+        android:layout_width="323dp"
+        android:layout_height="90dp"
+        android:background="@drawable/sign_inwborder"
+        android:padding="50dp"
+        app:layout_constraintBottom_toBottomOf="@id/background"
+        app:layout_constraintEnd_toEndOf="@id/background"
+        app:layout_constraintStart_toStartOf="@id/background"
+        app:layout_constraintTop_toTopOf="@id/background"
+        app:layout_constraintVertical_bias="0.761" />
+
+    <Button
+        android:id="@+id/SignUp"
+        android:layout_width="323dp"
+        android:layout_height="90dp"
+        android:background="@drawable/sign_upwborder"
+        android:padding="50dp"
+        app:layout_constraintBottom_toBottomOf="@id/background"
+        app:layout_constraintEnd_toEndOf="@id/background"
+        app:layout_constraintHorizontal_bias="0.494"
+        app:layout_constraintStart_toStartOf="@id/background"
+        app:layout_constraintTop_toBottomOf="@+id/SignIn"
+        app:layout_constraintVertical_bias="0.06999999" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

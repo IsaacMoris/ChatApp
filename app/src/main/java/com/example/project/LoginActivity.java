@@ -6,22 +6,28 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
 public class LoginActivity extends AppCompatActivity {
-    EditText emailId, password;
+    TextInputLayout emailId,password;
     Button btnSignIn;
     TextView tvSignUp;
     FirebaseAuth mFirebaseAuth;
+    Animation Alpha;
+
     private FirebaseAuth.AuthStateListener mAuthStateListener;
 
     @Override
@@ -53,8 +59,9 @@ public class LoginActivity extends AppCompatActivity {
         btnSignIn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String email = emailId.getText().toString();
-                String pwd = password.getText().toString();
+                Alpha(btnSignIn);
+                String email = emailId.getEditText().getText().toString();
+                String pwd = password.getEditText().getText().toString();
                 if(email.isEmpty()){
                     emailId.setError("Please enter email id");
                     emailId.requestFocus();
@@ -102,5 +109,12 @@ public class LoginActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
         mFirebaseAuth.addAuthStateListener(mAuthStateListener);
+    }
+    public void Alpha (Button bttn){
+        Alpha= new AlphaAnimation(1.0f,0.7f);
+        Alpha.setDuration(800);
+        Alpha.setRepeatCount(1);
+        Alpha.setRepeatMode(Animation.REVERSE);
+        bttn.startAnimation(Alpha);
     }
 }

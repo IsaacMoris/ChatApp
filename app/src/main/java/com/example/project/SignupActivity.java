@@ -13,6 +13,7 @@ import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -21,8 +22,12 @@ import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.HashMap;
 
+import de.hdodenhof.circleimageview.CircleImageView;
+
 public class SignupActivity extends AppCompatActivity {
-    private EditText email , pass;
+    private TextInputLayout name,status,email , pass;
+    private CircleImageView uImage;
+    private static final int GalleryPick = 1;
     private Button btnSign;
     private  TextView signin;
     private FirebaseAuth iFirebaseAuth;
@@ -34,27 +39,50 @@ public class SignupActivity extends AppCompatActivity {
         setContentView(R.layout.activity_signup);
 
         intitalize();
-
+        uImage = findViewById(R.id.uimage);
+        uImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent();
+                intent.setType("image/*");
+                intent.setAction(Intent.ACTION_GET_CONTENT);
+                startActivityForResult(Intent.createChooser(intent, "Select Image"), GalleryPick);
+            }
+        });
         btnSign.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String stEmail = email.getText().toString();
-                String stPass = pass.getText().toString();
+                String stEmail = email.getEditText().getText().toString();
+                String stPass = pass.getEditText().getText().toString();
+                 final String stName = name.getEditText().getText().toString();
+                 final String stStatus = status.getEditText().getText().toString();
 
-                if(stEmail.isEmpty()) {
-                    email.setError("Please enter email");
+                if(stName.isEmpty()) {
+                    name.setError("Please enter Name");
+                    name.requestFocus();
+                }
+                else if(stStatus.isEmpty())
+                {
+                    status.setError("Please enter Status");
+                    status.requestFocus();
+                }
+                else if(stEmail.isEmpty()) {
+                    email.setError("Please enter Email");
                     email.requestFocus();
                 }
+
                 else if(stPass.isEmpty())
                 {
-                    pass.setError("Please enter password");
+                    pass.setError("Please enter Password");
                     pass.requestFocus();
                 }
-                else if (stEmail.isEmpty() && stPass.isEmpty())
+
+
+                else if (stEmail.isEmpty() && stPass.isEmpty()&&stStatus.isEmpty()&&stName.isEmpty())
                 {
                     Toast.makeText(SignupActivity.this , "Fields are empty!" ,Toast.LENGTH_SHORT).show();
                 }
-                else if (!(stEmail.isEmpty() && stPass.isEmpty()))
+                else if (!(stEmail.isEmpty() && stPass.isEmpty()&&stName.isEmpty()&&stStatus.isEmpty()))
                 {
                     iFirebaseAuth.createUserWithEmailAndPassword(stEmail , stPass).addOnCompleteListener(SignupActivity.this, new OnCompleteListener<com.google.firebase.auth.AuthResult>() {
                         @Override
@@ -70,8 +98,8 @@ public class SignupActivity extends AppCompatActivity {
                                 userDatabase= FirebaseDatabase.getInstance().getReference().child("Users").child(uid);
 
                                 HashMap<String , String> hashMap = new HashMap<>() ;
-                                hashMap.put("name" , "No Name");
-                                hashMap.put("status" , "Hey there , i'm using Titans chat") ;
+                                hashMap.put("name" , stName);
+                                hashMap.put("status" , stStatus) ;
                                 hashMap.put("image" , "Empty") ;
                                 userDatabase.setValue(hashMap);
                                 startActivity(new Intent(SignupActivity.this , HomeActivity.class));
@@ -103,5 +131,8 @@ public class SignupActivity extends AppCompatActivity {
         pass = findViewById(R.id.TextPassword);
         btnSign = findViewById(R.id.buttonSign);
         signin = findViewById(R.id.textView);
+        name = findViewById(R.id.TextName);
+        status=findViewById(R.id.TextStatus);
+        name.requestFocus();
     }
 }
