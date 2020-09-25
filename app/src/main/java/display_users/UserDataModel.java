@@ -1,32 +1,32 @@
-package com.example.project;
+package display_users;
 
-public class User {
+public class UserDataModel implements Comparable<UserDataModel> {
     public String name;
     public String status;
     public String image;
     public String date;
-    public String request_type;
+    private String id;
+
+    public String getID() {
+        return id;
+    }
+
+    public void setID(String id) {
+        this.id = id;
+    }
 
     public String getDate() {
         return date;
-    }
-
-    public String getRequestType() {
-        return request_type;
-    }
-
-    public void setRequestType(String request_Type) {
-        request_type = request_Type;
     }
 
     public void setDate(String date) {
         this.date = date;
     }
 
-    public User() {
+    public UserDataModel() {
     }
 
-    public User(String name, String status, String image) {
+    public UserDataModel(String name, String status, String image) {
         this.name = name;
         this.status = status;
         this.image = image;
@@ -54,5 +54,10 @@ public class User {
 
     public void setImage(String image) {
         this.image = image;
+    }
+
+    @Override
+    public int compareTo(UserDataModel o) {
+        return new Double(this.getDate()).compareTo(new Double(o.getDate()));
     }
 }

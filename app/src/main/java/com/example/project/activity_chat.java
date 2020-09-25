@@ -1,7 +1,6 @@
 package com.example.project;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -11,11 +10,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -24,7 +21,6 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.Query;
 import com.google.firebase.database.ServerValue;
 import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
@@ -35,6 +31,7 @@ import java.util.List;
 import java.util.Map;
 
 import de.hdodenhof.circleimageview.CircleImageView;
+import fragment_package.FriendsFragment;
 
 public class activity_chat extends AppCompatActivity {
     static String mChatuser,mchatUserName,mCurrentUserId;
@@ -135,7 +132,7 @@ loadUserData(mChatuser);
            public void onClick(View view) {
                Intent intent;
                if(sourceActivity.equals("FriendsFragment"))
-               intent=new Intent(activity_chat.this,FriendsFragment.class);
+               intent=new Intent(activity_chat.this, FriendsFragment.class);
                else   intent=new Intent(activity_chat.this,ChatFragment.class);
                startActivity(intent);
            }
@@ -240,7 +237,5 @@ loadUserData(mChatuser);
 
           }
       });
-
-
     }
 }

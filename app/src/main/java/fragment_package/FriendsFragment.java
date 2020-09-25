@@ -1,4 +1,4 @@
-package com.example.project;
+package fragment_package;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -12,15 +12,20 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.firebase.ui.database.FirebaseRecyclerAdapter;
-import com.firebase.ui.database.FirebaseRecyclerOptions;
+import com.example.project.R;
+import com.example.project.activity_chat;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.squareup.picasso.Picasso;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import display_users.UserDataModel;
+import display_users.UserDataRecycleAdapter;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -42,6 +47,9 @@ public class FriendsFragment extends Fragment {
     private FirebaseAuth mAuth;
     private View mainView;
     private String userID;
+    private List<UserDataModel> usersDataList;
+    private UserDataRecycleAdapter myAdapter;
+    private UserDataRecycleAdapter.RecyclerViewListener itemListener;
 
     public FriendsFragment() {
         // Required empty public constructor
@@ -89,62 +97,46 @@ public class FriendsFragment extends Fragment {
         FriendsDatabase = FirebaseDatabase.getInstance().getReference().child("Friends").child(userID);
         userDatabase = FirebaseDatabase.getInstance().getReference().child("Users");
 
+        usersDataList = new ArrayList<>();
+
+        myAdapter= new UserDataRecycleAdapter(getContext(), usersDataList);
+        itemListener = new UserDataRecycleAdapter.RecyclerViewListener() {
+            @Override
+            public void onClick(int position) { onItemViewClick(position); }
+        };
+        myAdapter.setListener(itemListener);
+
+        FriendsDatabase.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull final DataSnapshot friendSnapshot) {
+                usersDataList.clear();
+
+                for(final DataSnapshot dataSnapshot: friendSnapshot.getChildren()){
+                    userDatabase.child(dataSnapshot.getKey()).addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                            UserDataModel user = snapshot.getValue(UserDataModel.class);
+                            user.setID(snapshot.getKey());
+                            user.setStatus(dataSnapshot.child("date").getValue().toString());
+                            usersDataList.add(user);
+                            friendsViewList.setAdapter(myAdapter);
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError error) {}
+                    });
+                }
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {}
+        });
+
         return mainView;
     }
 
-
-    @Override
-    public void onStart() {
-        super.onStart();
-
-        FirebaseRecyclerOptions<User> options = new FirebaseRecyclerOptions.Builder<User>()
-                .setQuery(FriendsDatabase, User.class).build();
-
-        FirebaseRecyclerAdapter<User, UserViewHolder> firebaseRecyclerAdapter =
-                new FirebaseRecyclerAdapter<User, UserViewHolder>(options) {
-                    @Override
-                    protected void onBindViewHolder(@NonNull final UserViewHolder holder, int position, @NonNull User model) {
-
-                        final String friendsIDs = getRef(position).getKey();
-                        holder.status.setText("Friend Since: "+ model.getDate());
-
-                        userDatabase.child(friendsIDs).addValueEventListener(new ValueEventListener() {
-                            @Override
-                            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                final String name = snapshot.child("name").getValue().toString();
-                                if(!snapshot.child("image").getValue().equals("default"))
-                                {
-                                    String image = snapshot.child("image").getValue().toString();
-                                    Picasso.get().load(image).into(holder.profileImage);
-                                }
-                                holder.name.setText(name);
-                                    holder.itemView.setOnClickListener(new View.OnClickListener() {
-                                        @Override
-                                        public void onClick(View v) {
-                                            Intent friendChat = new Intent(getActivity(), activity_chat.class);
-                                            friendChat.putExtra("user_id", friendsIDs);
-                                            friendChat.putExtra("source", "FriendsFragment");
-                                            startActivity(friendChat);
-                                        }
-                                    });
-                            }
-
-                            @Override
-                            public void onCancelled(@NonNull DatabaseError error) {
-
-                            }
-                        });
-                    }
-
-                    @NonNull
-                    @Override
-                    public UserViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-                        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.single_user_layout, parent, false);
-                        return  new UserViewHolder(view);
-                    }
-
-                };
-        friendsViewList.setAdapter(firebaseRecyclerAdapter);
-        firebaseRecyclerAdapter.startListening();
+    private void onItemViewClick(int position) {
+        Intent chatActivity = new Intent(getContext(), activity_chat.class);
+        chatActivity.putExtra("user_id", usersDataList.get(position).getID());
+        startActivity(chatActivity);
     }
 }

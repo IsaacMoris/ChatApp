@@ -1,26 +1,40 @@
 package com.example.project;
 
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
+
+import display_users.UserDataModel;
+import display_users.UserDataRecycleAdapter;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -38,10 +52,13 @@ public class ChatFragment extends Fragment {
     private String mParam1;
     private String mParam2;
     private RecyclerView chatFriendsList;
-    private DatabaseReference chatFriendsDatabase, userDatabase;
+    private DatabaseReference chatDatabase, userDatabase;
     private FirebaseAuth mAuth;
     private View mainView;
     private String userID;
+    private List<UserDataModel> usersDataList;
+    private UserDataRecycleAdapter myAdapter;
+    private UserDataRecycleAdapter.RecyclerViewListener itemListener;
 
     public ChatFragment() {
         // Required empty public constructor
@@ -75,76 +92,89 @@ public class ChatFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(LayoutInflater inflater, final ViewGroup container,
                              Bundle savedInstanceState) {
         mainView = inflater.inflate(R.layout.fragment_chat, container, false);
 
         mAuth = FirebaseAuth.getInstance();
         userID = mAuth.getCurrentUser().getUid();
-        chatFriendsList = mainView.findViewById(R.id.chatViewList);
-        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
-        chatFriendsList.setLayoutManager(layoutManager);
 
-        chatFriendsDatabase = FirebaseDatabase.getInstance().getReference().child("messages").child(userID);
+        chatFriendsList = mainView.findViewById(R.id.chatViewList);
+        chatFriendsList.setLayoutManager(new LinearLayoutManager(getActivity()));
+
+        chatDatabase = FirebaseDatabase.getInstance().getReference().child("messages").child(userID);
         userDatabase = FirebaseDatabase.getInstance().getReference().child("Users");
 
+        usersDataList = new ArrayList<>();
+
+        myAdapter= new UserDataRecycleAdapter(getContext(), usersDataList);
+        itemListener = new UserDataRecycleAdapter.RecyclerViewListener() {
+            @Override
+            public void onClick(int position) { onItemViewClick(position); }
+        };
+        myAdapter.setListener(itemListener);
+
+        chatDatabase.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                //Clearing List for not repeating
+                usersDataList.clear();
+
+                for(final DataSnapshot dataSnapshot: snapshot.getChildren()){
+                    userDatabase.child(dataSnapshot.getKey()).addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                            //Get User Data
+                            final UserDataModel user = snapshot.getValue(UserDataModel.class);
+                                    user.setID(snapshot.getKey());
+
+                                //Get Last Message between this user and its contacts
+                                        DatabaseReference reference = dataSnapshot.getRef();
+                                        Query lastMessage = reference.orderByKey().limitToLast(1);
+                                        lastMessage.addChildEventListener(new ChildEventListener() {
+                                            @Override
+                                            public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+                                                Message message = snapshot.getValue(Message.class);
+                                                user.setDate(String.valueOf(message.getTime()) );
+
+                                                if(message.getFrom().equals(userID))
+                                                    user.setStatus("You: "+ message.getMessage());
+                                                else
+                                                    user.setStatus(message.getMessage());
+
+                                                usersDataList.add(user);
+                                                //sort User based on chat time
+                                                Collections.sort(usersDataList);
+                                                Collections.reverse(usersDataList);
+                                                chatFriendsList.setAdapter(myAdapter);
+                                            }
+                                            @Override
+                                            public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {}
+                                            @Override
+                                            public void onChildRemoved(@NonNull DataSnapshot snapshot) {}
+                                            @Override
+                                            public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {}
+                                            @Override
+                                            public void onCancelled(@NonNull DatabaseError error) {}
+                                        });
+                                }
+                                @Override
+                                public void onCancelled(@NonNull DatabaseError error) {}
+                            });
+                }
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
         // Inflate the layout for this fragment
         return mainView;
     }
 
-    @Override
-    public void onStart() {
-        super.onStart();
-
-        FirebaseRecyclerOptions<User> options = new FirebaseRecyclerOptions.Builder<User>()
-                .setQuery(chatFriendsDatabase, User.class).build();
-
-        FirebaseRecyclerAdapter<User, UserViewHolder> firebaseRecyclerAdapter =
-                new FirebaseRecyclerAdapter<User, UserViewHolder>(options) {
-                    @Override
-                    protected void onBindViewHolder(@NonNull final UserViewHolder holder, int position, @NonNull User model) {
-
-                        final String friendsIDs = getRef(position).getKey();
-                        userDatabase.child(friendsIDs).addValueEventListener(new ValueEventListener() {
-                            @Override
-                            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                final String name = snapshot.child("name").getValue().toString();
-                                final String status = snapshot.child("status").getValue().toString();
-
-                                if(!snapshot.child("image").getValue().equals("default"))
-                                {
-                                    String image = snapshot.child("image").getValue().toString();
-                                    Picasso.get().load(image).into(holder.profileImage);
-                                }
-                                    holder.name.setText(name);
-                                    holder.status.setText("");
-                                        holder.itemView.setOnClickListener(new View.OnClickListener() {
-                                            @Override
-                                            public void onClick(View v) {
-                                                Intent friendChat = new Intent(getActivity(), activity_chat.class);
-                                                friendChat.putExtra("user_id", friendsIDs);
-                                                friendChat.putExtra("source","ChatFragment");
-                                                startActivity(friendChat);
-                                            }
-                                        });
-                            }
-
-                            @Override
-                            public void onCancelled(@NonNull DatabaseError error) {
-
-                            }
-                        });
-                    }
-
-                    @NonNull
-                    @Override
-                    public UserViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-                        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.single_user_layout, parent, false);
-                        return  new UserViewHolder(view);
-                    }
-
-                };
-        chatFriendsList.setAdapter(firebaseRecyclerAdapter);
-        firebaseRecyclerAdapter.startListening();
+    private void onItemViewClick(int position){
+        Intent chatActivity = new Intent(getContext(), activity_chat.class);
+        chatActivity.putExtra("user_id", usersDataList.get(position).getID());
+        startActivity(chatActivity);
     }
 }

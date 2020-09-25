@@ -7,8 +7,11 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
+import android.nfc.Tag;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -23,13 +26,22 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import display_users.UserDataModel;
+import display_users.UserDataRecycleAdapter;
+
 public class AllUsersActivity extends AppCompatActivity {
 
     private Toolbar usersBar;
-    private RecyclerView usersList;
-    private DatabaseReference usersDataBase;
+    private RecyclerView RecyclerUsersList;
+    private DatabaseReference usersDatabase, friendsDatabase;
     private FirebaseAuth mAuth;
     private String userId;
+    private List<UserDataModel> usersDataList;
+    private UserDataRecycleAdapter myAdapter;
+    private UserDataRecycleAdapter.RecyclerViewListener itemListener;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,23 +52,65 @@ public class AllUsersActivity extends AppCompatActivity {
         getSupportActionBar().setTitle("All Users");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        usersList = findViewById(R.id.allUsersList);
-        usersList.setHasFixedSize(true);
-        usersList.setLayoutManager(new LinearLayoutManager(this));
+        RecyclerUsersList = findViewById(R.id.allUsersList);
+        RecyclerUsersList.setHasFixedSize(true);
+        RecyclerUsersList.setLayoutManager(new LinearLayoutManager(this));
+
+        usersDataList = new ArrayList<>();
 
         mAuth = FirebaseAuth.getInstance();
         userId = mAuth.getCurrentUser().getUid();
-        usersDataBase = FirebaseDatabase.getInstance().getReference().child("Users");
+        usersDatabase = FirebaseDatabase.getInstance().getReference().child("Users");
+        friendsDatabase = FirebaseDatabase.getInstance().getReference().child("Friends").child(userId);
 
+        myAdapter= new UserDataRecycleAdapter(getApplicationContext(), usersDataList);
+        itemListener = new UserDataRecycleAdapter.RecyclerViewListener() {
+            @Override
+            public void onClick(int position) { onItemViewClick(position); }
+        };
+        myAdapter.setListener(itemListener);
+        
 
+        usersDatabase.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                usersDataList.clear();
+                for(final DataSnapshot dataSnapshot : snapshot.getChildren()){
+                    final UserDataModel user = dataSnapshot.getValue(UserDataModel.class);
+                    if(!dataSnapshot.getKey().equals(userId)){
+                            friendsDatabase.addValueEventListener(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                    if(!snapshot.hasChild(dataSnapshot.getKey())){
+                                        user.setID(dataSnapshot.getKey());
+                                        Log.i("User",String.valueOf(user.name));
+                                        usersDataList.add(user);
+                                        RecyclerUsersList.setAdapter(myAdapter);
+                                    }
+                                }
+                                @Override
+                                public void onCancelled(@NonNull DatabaseError error) {}
+                            });
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {}
+        });
     }
 
-    @Override
+    private void onItemViewClick(int position){
+        Intent userProfile = new Intent(AllUsersActivity.this, UserProfileActivity.class);
+        userProfile.putExtra("userID", usersDataList.get(position).getID());
+        startActivity(userProfile);
+    }
+   /* @Override
     protected void onStart() {
         super.onStart();
 
         FirebaseRecyclerOptions<User>options = new FirebaseRecyclerOptions.Builder<User>()
-                .setQuery(usersDataBase, User.class).build();
+                .setQuery(usersDatabase, User.class).build();
 
         FirebaseRecyclerAdapter<User, UserViewHolder> firebaseRecyclerAdapter =
                 new FirebaseRecyclerAdapter<User, UserViewHolder>(options) {
@@ -64,7 +118,7 @@ public class AllUsersActivity extends AppCompatActivity {
                     protected void onBindViewHolder(@NonNull final UserViewHolder holder, int position, @NonNull User model) {
 
                         final String friendsIDs = getRef(position).getKey();
-                        usersDataBase.child(friendsIDs).addValueEventListener(new ValueEventListener() {
+                        usersDatabase.child(friendsIDs).addValueEventListener(new ValueEventListener() {
                             @Override
                             public void onDataChange(@NonNull DataSnapshot snapshot) {
                                 final String name = snapshot.child("name").getValue().toString();
@@ -107,7 +161,7 @@ public class AllUsersActivity extends AppCompatActivity {
                     }
 
                 };
-        usersList.setAdapter(firebaseRecyclerAdapter);
+        RecyclerUsersList.setAdapter(firebaseRecyclerAdapter);
         firebaseRecyclerAdapter.startListening();
-    }
+    }*/
 }
