@@ -19,14 +19,16 @@
             android:name=".AllUsersActivity"
             android:parentActivityName=".HomeActivity" />
         <activity android:name=".SettingsActivity" />
-        <activity android:name=".HomeActivity" />
-        <activity android:name=".LoginActivity">
+
+        <activity android:name=".HomeActivity" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <activity android:name=".LoginActivity"/>
         <activity android:name=".SignupActivity" />
         <activity android:name="com.theartofdev.edmodo.cropper.CropImageActivity"
             android:theme="@style/Base.Theme.AppCompat"/> <!-- optional (needed if default theme has no action bar) -->

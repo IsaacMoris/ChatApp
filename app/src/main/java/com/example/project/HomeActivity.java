@@ -17,7 +17,6 @@ import fragment_package.FragmentAdapter;
 public class HomeActivity extends AppCompatActivity {
 
     private  FirebaseAuth mFireBaseAuth;
-    private FirebaseAuth.AuthStateListener mAuthStateListener;
     private Toolbar homeBar;
     private ViewPager homeViewPager;
     private FragmentAdapter fragmentAdapter;
@@ -27,6 +26,12 @@ public class HomeActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+
+        mFireBaseAuth = FirebaseAuth.getInstance();
+        if(mFireBaseAuth.getCurrentUser().getUid() == null){
+            startActivity(new Intent(HomeActivity.this, LoginActivity.class));
+            finish();
+        }
 
         homeBar = findViewById(R.id.homeBar);
         setSupportActionBar(homeBar);
