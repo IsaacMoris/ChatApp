@@ -21,6 +21,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.squareup.picasso.Picasso;
 
 import java.text.DateFormat;
 import java.util.Date;
@@ -78,6 +79,7 @@ public class UserProfileActivity extends AppCompatActivity {
 
                 mProfileName.setText(name);
                 mProfileStatus.setText(status);
+                Picasso.get().load((String)snapshot.child("image").getValue()).into(mProfileImg);
 
                 mFriendReqDB.child(mCurrentUser.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
