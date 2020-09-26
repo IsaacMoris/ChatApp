@@ -40,7 +40,7 @@ public class activity_chat extends AppCompatActivity {
     private DatabaseReference mRootRef;
     TextView Title_view,Last_seen_view;
     EditText chat_message_view;
-    ImageButton send_btn;
+    ImageButton send_btn,emoji_bttn;
     CircleImageView profileImage;
     List<Message> messageList;
     RecyclerView ViewMessageList;
@@ -81,6 +81,7 @@ public class activity_chat extends AppCompatActivity {
         // writing and sending messages
         chat_message_view=(EditText) findViewById(R.id.chat_message_view);
         send_btn=(ImageButton)findViewById(R.id.chat_send_btn);
+        emoji_bttn=(ImageButton)findViewById(R.id.chat_emoji_btn);
 
         //custom bar stuff
         Title_view=(TextView) findViewById(R.id.custom_bar_title);

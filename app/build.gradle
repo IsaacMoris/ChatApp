@@ -29,7 +29,10 @@ dependencies {
     api 'com.theartofdev.edmodo:android-image-cropper:2.8.+'
     implementation fileTree(dir: "libs", include: ["*.jar"])
     implementation 'com.android.support:multidex:1.0.3'
-
+    //noinspection GradleCompatible
+    implementation "com.android.support:support-emoji-appcompat:26.1.0"
+    //noinspection GradleCompatible
+    implementation "com.android.support:support-emoji-bundled:26.1.0"
     implementation 'androidx.appcompat:appcompat:1.2.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.0.1'
     implementation 'com.google.firebase:firebase-core:16.0.4'

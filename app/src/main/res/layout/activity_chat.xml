@@ -6,7 +6,17 @@
     android:layout_height="match_parent"
     android:background="#e6e6e6"
     tools:context=".activity_chat">
-
+    <ImageView
+        android:id="@+id/background"
+        android:layout_width="551dp"
+        android:layout_height="857dp"
+        android:contentDescription="@string/Backgroud"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0"
+        app:srcCompat="@drawable/bg" />
     <include
         android:id="@+id/chat_app_bar"
         layout="@layout/app_bar_layout" />
@@ -29,7 +39,7 @@
             android:layout_height="match_parent"
             android:layout_above="@+id/linearLayout"
             android:layout_below="@+id/chat_app_bar"
-            android:windowSoftInputMode="adjustResize"/>
+            android:windowSoftInputMode="adjustResize" />
 
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
@@ -43,12 +53,12 @@
         android:weightSum="10">
 
         <ImageButton
-            android:id="@+id/chat_add_btn"
+            android:id="@+id/chat_emoji_btn"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_weight="1"
             android:alpha="0.5"
-            android:background="@android:color/white"
+            android:background="@drawable/outline_insert_emoticon_black_36"
             android:padding="10dp"
 
             />
