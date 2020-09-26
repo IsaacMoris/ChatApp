@@ -3,44 +3,34 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="95dp"
+    android:layout_height="80dp"
     android:layout_marginLeft="2dp"
     android:layout_marginTop="5dp"
     android:layout_marginRight="2dp"
-    android:background="@drawable/border_layout"
-    android:paddingTop="15dp">
 
-    <TextView
-        android:id="@+id/singleUserStatus"
-        android:layout_width="wrap_content"
-        android:layout_height="33dp"
-        android:layout_marginTop="8dp"
-        android:text="Hey, I am Using Teen Titans"
-        android:textColor="#372C2C"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.129"
-        app:layout_constraintStart_toStartOf="@+id/guideline8"
-        app:layout_constraintTop_toBottomOf="@+id/singleUserName" />
+    android:paddingTop="10dp">
+
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/singleUserImage"
         android:layout_width="77dp"
         android:layout_height="60dp"
         android:layout_marginEnd="8dp"
-        android:layout_marginRight="15dp"
+        android:layout_marginBottom="8dp"
         android:src="@drawable/user_default_image"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/guideline8"
-        app:layout_constraintHorizontal_bias="0.4"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintHorizontal_bias="0.176"
+        app:layout_constraintStart_toStartOf="parent"
+
+        />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline8"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        app:layout_constraintGuide_begin="20dp"
-        app:layout_constraintGuide_percent=".25" />
+        app:layout_constraintGuide_end="328dp" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline9"
@@ -54,13 +44,37 @@
         android:id="@+id/singleUserName"
         android:layout_width="wrap_content"
         android:layout_height="31dp"
-        android:text="Name"
+        android:layout_marginTop="4dp"
+        android:text="@string/name"
         android:textColor="#0E0E0E"
         android:textSize="18sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toStartOf="@+id/guideline9"
-        app:layout_constraintHorizontal_bias="0.153"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/guideline8"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/singleUserStatus"
+        android:layout_width="wrap_content"
+        android:layout_height="33dp"
+        android:layout_marginTop="4dp"
+        android:text="@string/hey_i_am_using_teen_titans"
+        android:textColor="#372C2C"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/guideline8"
+        app:layout_constraintTop_toBottomOf="@+id/singleUserName" />
+
+    <View
+        android:id="@+id/divider"
+        android:layout_width="322dp"
+        android:layout_height="2dp"
+        android:layout_marginTop="29dp"
+        android:background="#314050"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.93"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/singleUserStatus" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -36,6 +36,7 @@
         <com.google.android.material.textfield.TextInputEditText
             android:layout_width="match_parent"
             android:layout_height="56dp"
+            android:nextFocusDown="@id/TextPassword"
             android:textSize="20sp" />
     </com.google.android.material.textfield.TextInputLayout>
 

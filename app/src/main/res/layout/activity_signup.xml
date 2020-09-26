@@ -24,52 +24,10 @@
         android:layout_height="110dp"
         android:layout_marginStart="200dp"
         android:layout_marginTop="46dp"
-        android:src="@mipmap/ic_launcher_round"
+        android:nextFocusDown="@id/TextStatus"
+        android:src="@drawable/user_default_image"
         app:layout_constraintStart_toStartOf="@+id/background"
         app:layout_constraintTop_toTopOf="@+id/background" />
-
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/TextEmailAddress"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-        android:layout_width="343dp"
-        android:layout_height="77dp"
-        android:layout_marginStart="104dp"
-        android:layout_marginTop="340dp"
-        android:hint="@string/email_address"
-        android:textColorHint="#808080"
-        app:boxBackgroundMode="filled"
-        app:endIconMode="clear_text"
-        app:layout_constraintStart_toStartOf="@+id/background"
-        app:layout_constraintTop_toTopOf="@id/background"
-        app:startIconDrawable="@drawable/outline_email_black_24">
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:layout_width="match_parent"
-            android:layout_height="56dp"
-            android:textSize="20sp" />
-    </com.google.android.material.textfield.TextInputLayout>
-
-
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/TextStatus"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-        android:layout_width="343dp"
-        android:layout_height="77dp"
-        android:layout_marginStart="104dp"
-        android:layout_marginTop="260dp"
-        android:hint="@string/status"
-        android:textColorHint="#808080"
-        app:boxBackgroundMode="filled"
-        app:endIconMode="clear_text"
-        app:layout_constraintStart_toStartOf="@+id/background"
-        app:layout_constraintTop_toTopOf="@id/background"
-        app:startIconDrawable="@drawable/outline_edit_black_24">
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:layout_width="match_parent"
-            android:layout_height="56dp"
-            android:textSize="20sp" />
-    </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/TextName"
@@ -91,6 +49,51 @@
             android:layout_height="56dp"
             android:textSize="20sp" />
     </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/TextStatus"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="343dp"
+        android:layout_height="77dp"
+        android:layout_marginStart="104dp"
+        android:layout_marginTop="260dp"
+        android:hint="@string/status"
+        android:textColorHint="#808080"
+        app:boxBackgroundMode="filled"
+        app:endIconMode="clear_text"
+        app:layout_constraintStart_toStartOf="@+id/background"
+        app:layout_constraintTop_toTopOf="@id/background"
+        app:startIconDrawable="@drawable/outline_edit_black_24">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:nextFocusDown="@id/TextEmailAddress"
+            android:textSize="20sp" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/TextEmailAddress"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="343dp"
+        android:layout_height="77dp"
+        android:layout_marginStart="104dp"
+        android:layout_marginTop="340dp"
+        android:hint="@string/email_address"
+        android:nextFocusDown="@id/TextPassword"
+        android:textColorHint="#808080"
+        app:boxBackgroundMode="filled"
+        app:endIconMode="clear_text"
+        app:layout_constraintStart_toStartOf="@+id/background"
+        app:layout_constraintTop_toTopOf="@id/background"
+        app:startIconDrawable="@drawable/outline_email_black_24">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:textSize="20sp" />
+    </com.google.android.material.textfield.TextInputLayout>
+
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/TextPassword"
