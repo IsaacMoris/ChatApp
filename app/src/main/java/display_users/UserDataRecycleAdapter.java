@@ -1,6 +1,7 @@
 package display_users;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,6 +24,7 @@ public class UserDataRecycleAdapter extends RecyclerView.Adapter<UserDataRecycle
     private List<UserDataModel> userData;
     private LayoutInflater Inflater;
     private RecyclerViewListener listener;
+    private RecyclerLongClickListener longClickListener;
 
     // data is passed into the constructor
     public UserDataRecycleAdapter(Context context, List<UserDataModel> data) {
@@ -60,9 +62,14 @@ public class UserDataRecycleAdapter extends RecyclerView.Adapter<UserDataRecycle
         void onClick(int position);
     }
 
+    public void setLongClickListener(RecyclerLongClickListener longClickListener){this.longClickListener = longClickListener;}
+    public interface RecyclerLongClickListener{
+        void onLongClick(View v, int position);
+    }
+
 
     
-    public class UserDataViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
+    public class UserDataViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener{
         private CircleImageView profileImage;
         private TextView name, status;
 
@@ -73,6 +80,7 @@ public class UserDataRecycleAdapter extends RecyclerView.Adapter<UserDataRecycle
             name = itemView.findViewById(R.id.singleUserName);
             status = itemView.findViewById(R.id.singleUserStatus);
             itemView.setOnClickListener(this);
+            itemView.setOnLongClickListener(this);
         }
 
         public void setProfileImage(CircleImageView profileImage) {
@@ -90,6 +98,12 @@ public class UserDataRecycleAdapter extends RecyclerView.Adapter<UserDataRecycle
         @Override
         public void onClick(View v) {
             listener.onClick(getAdapterPosition());
+        }
+
+        @Override
+        public boolean onLongClick(View v) {
+            longClickListener.onLongClick(v, getAdapterPosition());
+            return true;
         }
     }
 

@@ -102,7 +102,7 @@ public class AllUsersActivity extends AppCompatActivity {
 
     private void onItemViewClick(int position){
         Intent userProfile = new Intent(AllUsersActivity.this, UserProfileActivity.class);
-        userProfile.putExtra("userID", usersDataList.get(position).getID());
+        userProfile.putExtra("user_id", usersDataList.get(position).getID());
         startActivity(userProfile);
     }
 }

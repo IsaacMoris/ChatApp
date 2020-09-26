@@ -48,7 +48,7 @@ public class UserProfileActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_profile);
 
-        final String userID = getIntent().getStringExtra("userID");
+        final String userID = getIntent().getStringExtra("user_id");
 
         mUsersDB = FirebaseDatabase.getInstance().getReference().child("Users").child(userID);
         mCurrentUser = FirebaseAuth.getInstance().getCurrentUser();

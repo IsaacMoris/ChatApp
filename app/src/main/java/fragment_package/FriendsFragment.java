@@ -1,18 +1,25 @@
 package fragment_package;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.PopupMenu;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.project.R;
+import com.example.project.UserProfileActivity;
 import com.example.project.activity_chat;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -32,7 +39,7 @@ import display_users.UserDataRecycleAdapter;
  * Use the {@link FriendsFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class FriendsFragment extends Fragment {
+public class FriendsFragment extends FragmentControl implements PopupMenu.OnMenuItemClickListener {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -44,12 +51,7 @@ public class FriendsFragment extends Fragment {
     private String mParam2;
     private RecyclerView friendsViewList;
     private DatabaseReference FriendsDatabase, userDatabase;
-    private FirebaseAuth mAuth;
-    private View mainView;
-    private String userID;
     private List<UserDataModel> usersDataList;
-    private UserDataRecycleAdapter myAdapter;
-    private UserDataRecycleAdapter.RecyclerViewListener itemListener;
 
     public FriendsFragment() {
         // Required empty public constructor
@@ -87,12 +89,18 @@ public class FriendsFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         mainView = inflater.inflate(R.layout.fragment_friends, container, false);
+        Initialize();
+        retrieveData();
+        return mainView;
+    }
 
+    @Override
+    protected void Initialize() {
         mAuth = FirebaseAuth.getInstance();
         userID = mAuth.getCurrentUser().getUid();
+
         friendsViewList = mainView.findViewById(R.id.friendsViewList);
-        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
-        friendsViewList.setLayoutManager(layoutManager);
+        friendsViewList.setLayoutManager(new LinearLayoutManager(getActivity()));
 
         FriendsDatabase = FirebaseDatabase.getInstance().getReference().child("Friends").child(userID);
         userDatabase = FirebaseDatabase.getInstance().getReference().child("Users");
@@ -102,10 +110,18 @@ public class FriendsFragment extends Fragment {
         myAdapter= new UserDataRecycleAdapter(getContext(), usersDataList);
         itemListener = new UserDataRecycleAdapter.RecyclerViewListener() {
             @Override
-            public void onClick(int position) { onItemViewClick(position); }
+            public void onClick(int position) { onItemClick(position); }
+        };
+        longClickListener = new UserDataRecycleAdapter.RecyclerLongClickListener() {
+            @Override
+            public void onLongClick(View v, int position) {onItemLongClick(v, position);}
         };
         myAdapter.setListener(itemListener);
+        myAdapter.setLongClickListener(longClickListener);
+    }
 
+    @Override
+    protected void retrieveData() {
         FriendsDatabase.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull final DataSnapshot friendSnapshot) {
@@ -121,7 +137,6 @@ public class FriendsFragment extends Fragment {
                             usersDataList.add(user);
                             friendsViewList.setAdapter(myAdapter);
                         }
-
                         @Override
                         public void onCancelled(@NonNull DatabaseError error) {}
                     });
@@ -130,13 +145,32 @@ public class FriendsFragment extends Fragment {
             @Override
             public void onCancelled(@NonNull DatabaseError error) {}
         });
-
-        return mainView;
     }
 
-    private void onItemViewClick(int position) {
-        Intent chatActivity = new Intent(getContext(), activity_chat.class);
-        chatActivity.putExtra("user_id", usersDataList.get(position).getID());
-        startActivity(chatActivity);
+    @Override
+    protected void onItemLongClick(View v , int position){
+        showPopupMenu(v, position);
+    }
+
+    private void showPopupMenu(View v, int position){
+        this.clickedItemPosition = position;
+        PopupMenu popUp = new PopupMenu(getContext(), v, Gravity.CENTER);
+        popUp.setOnMenuItemClickListener(this);
+        popUp.inflate(R.menu.popup_menu);
+        popUp.show();
+    }
+
+    @Override
+    public boolean onMenuItemClick(MenuItem item) {
+        switch (item.getItemId()){
+            case R.id.seeProfilePopupOption:
+                goToActivity(usersDataList.get(clickedItemPosition).getID(), new UserProfileActivity());
+                return true;
+            case R.id.sendMessagePopupOption:
+                goToActivity(usersDataList.get(clickedItemPosition).getID(), new activity_chat());
+                return true;
+            default:
+                return true;
+        }
     }
 }

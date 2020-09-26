@@ -31,6 +31,7 @@ import java.util.List;
 import java.util.Map;
 
 import de.hdodenhof.circleimageview.CircleImageView;
+import fragment_package.ChatFragment;
 import fragment_package.FriendsFragment;
 
 public class activity_chat extends AppCompatActivity {
@@ -127,16 +128,16 @@ loadUserData(mChatuser);
                 //userNameText.setText("");
             }
         });
-       /*back_button.setOnClickListener(new View.OnClickListener() {
+       back_button.setOnClickListener(new View.OnClickListener() {
            @Override
            public void onClick(View view) {
                Intent intent;
-               if(sourceActivity.equals("FriendsFragment"))
-               intent=new Intent(activity_chat.this, FriendsFragment.class);
-               else   intent=new Intent(activity_chat.this,ChatFragment.class);
+               //if(sourceActivity.equals("FriendsFragment"))
+               intent=new Intent(activity_chat.this, HomeActivity.class);
+               //else   intent=new Intent(activity_chat.this, ChatFragment.class);
                startActivity(intent);
            }
-       });*/
+       });
 
     }
 

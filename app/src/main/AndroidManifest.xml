@@ -15,14 +15,15 @@
 
 
     </activity>
-        <activity android:name=".ProfileActivity"></activity>
-        <activity android:name=".activity_chat"></activity>
-        <activity android:name=".UserProfileActivity" />
-        <activity
-            android:name=".AllUsersActivity"
-            android:parentActivityName=".HomeActivity" />
-        <activity android:name=".SettingsActivity" />
+        <activity android:name=".ProfileActivity"/>
 
+        <activity android:name=".activity_chat"/>
+        <activity android:name=".UserProfileActivity" />
+
+        <activity android:name=".AllUsersActivity"
+                  android:parentActivityName=".HomeActivity" />
+
+        <activity android:name=".SettingsActivity" />
         <activity android:name=".HomeActivity" >
 
 

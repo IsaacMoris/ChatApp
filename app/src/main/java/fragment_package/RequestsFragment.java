@@ -32,7 +32,7 @@ import display_users.UserDataRecycleAdapter;
  * Use the {@link RequestsFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class RequestsFragment extends Fragment {
+public class RequestsFragment extends FragmentControl {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -44,12 +44,7 @@ public class RequestsFragment extends Fragment {
     private String mParam2;
     private RecyclerView friendRequestList;
     private DatabaseReference friendRequestsDatabase, userDatabase;
-    private FirebaseAuth mAuth;
-    private View mainView;
-    private String userID;
     private List<UserDataModel> requestsDataList;
-    private UserDataRecycleAdapter myAdapter;
-    private UserDataRecycleAdapter.RecyclerViewListener itemListener;
 
     public RequestsFragment() {
         // Required empty public constructor
@@ -87,6 +82,15 @@ public class RequestsFragment extends Fragment {
                              final Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         mainView = inflater.inflate(R.layout.fragment_requests, container, false);
+        Initialize();
+        retrieveData();
+        return mainView;
+
+
+    }
+
+    @Override
+    protected void Initialize() {
         mAuth = FirebaseAuth.getInstance();
         userID = mAuth.getCurrentUser().getUid();
         friendRequestList = mainView.findViewById(R.id.friendRequestList);
@@ -101,10 +105,13 @@ public class RequestsFragment extends Fragment {
         myAdapter= new UserDataRecycleAdapter(getContext(), requestsDataList);
         itemListener = new UserDataRecycleAdapter.RecyclerViewListener() {
             @Override
-            public void onClick(int position) { onItemViewClick(position); }
+            public void onClick(int position) { onItemClick(position); }
         };
         myAdapter.setListener(itemListener);
+    }
 
+    @Override
+    protected void retrieveData() {
         friendRequestsDatabase.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -136,15 +143,10 @@ public class RequestsFragment extends Fragment {
             @Override
             public void onCancelled(@NonNull DatabaseError error) {}
         });
-
-        return mainView;
-
-
     }
 
-    private void onItemViewClick(int position) {
-        Intent profileActivity = new Intent(getContext(), UserProfileActivity.class);
-        profileActivity.putExtra("userID", requestsDataList.get(position).getID());
-        startActivity(profileActivity);
+    @Override
+    protected void onItemClick(int position){
+        goToActivity(requestsDataList.get(position).getID(), new UserProfileActivity());
     }
 }
