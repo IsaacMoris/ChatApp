@@ -30,7 +30,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        app:layout_constraintGuide_end="328dp" />
+        app:layout_constraintGuide_end="326dp" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline9"
@@ -61,7 +61,7 @@
         android:layout_marginTop="4dp"
         android:text="@string/hey_i_am_using_teen_titans"
         android:textColor="#372C2C"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toEndOf="@id/guideline9"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/guideline8"
         app:layout_constraintTop_toBottomOf="@+id/singleUserName" />
@@ -73,8 +73,8 @@
         android:layout_marginTop="29dp"
         android:background="#314050"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.93"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@id/guideline8"
         app:layout_constraintTop_toTopOf="@+id/singleUserStatus" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
