@@ -13,6 +13,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -33,13 +34,16 @@ import java.util.Map;
 import de.hdodenhof.circleimageview.CircleImageView;
 import fragment_package.ChatFragment;
 import fragment_package.FriendsFragment;
+import hani.momanii.supernova_emoji_library.Actions.EmojIconActions;
+import hani.momanii.supernova_emoji_library.Helper.EmojiconEditText;
+import hani.momanii.supernova_emoji_library.Helper.EmojiconTextView;
 
 public class activity_chat extends AppCompatActivity {
     static String mChatuser,mchatUserName,mCurrentUserId;
     Toolbar mChatToolBar;
     private DatabaseReference mRootRef;
     TextView Title_view,Last_seen_view;
-    EditText chat_message_view;
+    EmojiconEditText chat_message_view;
     ImageButton send_btn,emoji_bttn;
     CircleImageView profileImage;
     List<Message> messageList;
@@ -49,7 +53,7 @@ public class activity_chat extends AppCompatActivity {
     FirebaseAuth firebaseAuth;
     ImageButton back_button;
     String sourceActivity;
-
+    View contentroot;
     public static String getmChatuser() {
         return mChatuser;
     }
@@ -79,10 +83,13 @@ public class activity_chat extends AppCompatActivity {
         sourceActivity=intent.getStringExtra("source");
 
         // writing and sending messages
-        chat_message_view=(EditText) findViewById(R.id.chat_message_view);
+        chat_message_view=(EmojiconEditText) findViewById(R.id.chat_message_view);
         send_btn=(ImageButton)findViewById(R.id.chat_send_btn);
         emoji_bttn=(ImageButton)findViewById(R.id.chat_emoji_btn);
+        contentroot=(View) findViewById(R.id.contentroot);
 
+//        emojIcon.setUseSystemEmoji(true);
+//        chat_message_view.setUseSystemDefault(true);
         //custom bar stuff
         Title_view=(TextView) findViewById(R.id.custom_bar_title);
         Last_seen_view=(TextView) findViewById(R.id.custom_bar_seen);
@@ -93,6 +100,9 @@ public class activity_chat extends AppCompatActivity {
         messageAdabter=new MessageAdabter(messageList);
         ViewMessageList.setAdapter(messageAdabter);
         //LayoutInflater inflater = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        // Emoji Keyboard
+        EmojIconActions emojIcon=new EmojIconActions(this,ViewMessageList,chat_message_view,emoji_bttn);
+        emojIcon.ShowEmojIcon();
         loadMessages();
         if(messageList.size()==0){
             mRootRef.child("Chat").child(mChatuser).child(mCurrentUserId).child("seen").setValue(false);
