@@ -62,7 +62,7 @@ public class UserProfileActivity extends AppCompatActivity {
         mProfileCount = (TextView)findViewById(R.id.totalFriends);
         mSendRequestBtn = (Button)findViewById(R.id.sendRequestBtn);
         mRejectRequestBtn = (Button)findViewById(R.id.rejectRequestBtn);
-        mRejectRequestBtn.setVisibility(View.INVISIBLE);
+        findViewById(R.id.lnrejectButton).setVisibility(View.INVISIBLE);
         mProfileImg = (ImageView)findViewById(R.id.profileImg);
 
         mProgressDialog = new ProgressDialog(this);
@@ -89,7 +89,7 @@ public class UserProfileActivity extends AppCompatActivity {
                             if(Request_Type.equals("sent")){
                                 mRelationState = 2;
                                 mSendRequestBtn.setText("Accept Friend Request");
-                                mRejectRequestBtn.setVisibility(View.VISIBLE);
+                                findViewById(R.id.lnrejectButton).setVisibility(View.VISIBLE);
                             } else if(Request_Type.equals("received")){
                                 mRelationState = 1;
                                 mSendRequestBtn.setText("Cancel Friend Request");
@@ -259,7 +259,7 @@ public class UserProfileActivity extends AppCompatActivity {
                         });
                 }
                 mSendRequestBtn.setEnabled(true);
-                mRejectRequestBtn.setVisibility(View.INVISIBLE);
+                findViewById(R.id.lnrejectButton).setVisibility(View.INVISIBLE);
             }
         });
     }
