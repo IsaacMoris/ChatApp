@@ -1,8 +1,11 @@
 package com.example.project;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.viewpager.widget.ViewPager;
+import androidx.viewpager2.adapter.FragmentStateAdapter;
+import androidx.viewpager2.widget.ViewPager2;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -10,6 +13,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import com.google.android.material.tabs.TabLayout;
 
+import com.google.android.material.tabs.TabLayoutMediator;
 import com.google.firebase.auth.FirebaseAuth;
 
 import fragment_package.FragmentAdapter;
@@ -18,8 +22,8 @@ public class HomeActivity extends AppCompatActivity {
 
     private  FirebaseAuth mFireBaseAuth;
     private Toolbar homeBar;
-    private ViewPager homeViewPager;
-    private FragmentAdapter fragmentAdapter;
+    private ViewPager2 homeViewPager;
+    private FragmentStateAdapter fragmentAdapter;
     private TabLayout homeTabLayout;
 
     @Override
@@ -37,13 +41,31 @@ public class HomeActivity extends AppCompatActivity {
         setSupportActionBar(homeBar);
         getSupportActionBar().setTitle("Teen Titans");
 
-        fragmentAdapter = new FragmentAdapter(getSupportFragmentManager());
+        fragmentAdapter = new FragmentAdapter(this);
         homeViewPager = findViewById(R.id.homeViewPager);
         homeViewPager.setAdapter(fragmentAdapter);
 
         homeTabLayout = findViewById(R.id.homeTabLayout);
-        homeTabLayout.setupWithViewPager(homeViewPager);
 
+        new TabLayoutMediator(homeTabLayout, homeViewPager,
+                new TabLayoutMediator.TabConfigurationStrategy() {
+                    @Override public void onConfigureTab(@NonNull TabLayout.Tab tab, int position) {
+                        switch (position){
+                            case 0:
+                                tab.setText("Chat");
+                                break;
+                            case 1:
+                                tab.setText("Friends");
+                                break;
+                            case 2:
+                                tab.setText("Requests");
+                                break;
+                            default:
+                                tab.setText("");
+                                break;
+                        }
+                    }
+                }).attach();
     }
 
     @Override

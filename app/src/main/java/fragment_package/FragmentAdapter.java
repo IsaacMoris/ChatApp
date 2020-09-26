@@ -1,40 +1,36 @@
 package fragment_package;
 
+import android.util.Log;
+
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
+import androidx.viewpager2.adapter.FragmentStateAdapter;
 
-public class FragmentAdapter extends FragmentPagerAdapter {
-    public FragmentAdapter(@NonNull FragmentManager fm) {
-        super(fm);
+public class FragmentAdapter extends FragmentStateAdapter {
+    public FragmentAdapter(@NonNull FragmentActivity fa) {
+        super(fa);
     }
 
     @NonNull
     @Override
-    public Fragment getItem(int position) {
-
+    public Fragment createFragment(int position) {
+        Log.i("Data", "Fragment no: " + position);
         switch (position){
             case 0:
-                ChatFragment chatFragment = new ChatFragment();
-                return chatFragment;
+                return  new ChatFragment();
             case 1:
-                FriendsFragment friendsFragment = new FriendsFragment();
-                return friendsFragment;
+                return new FriendsFragment();
             case 2:
-                RequestsFragment requestsFragment = new RequestsFragment();
-                return requestsFragment;
+                return  new RequestsFragment();
             default:
                 return null;
         }
     }
 
-    @Override
-    public int getCount() {
-        return 3;
-    }
-
-    @Override
+    /*@Override
     public CharSequence getPageTitle(int position){
         switch (position){
             case 0:
@@ -46,5 +42,10 @@ public class FragmentAdapter extends FragmentPagerAdapter {
             default:
                 return null;
         }
+    }*/
+
+    @Override
+    public int getItemCount() {
+        return 3;
     }
 }

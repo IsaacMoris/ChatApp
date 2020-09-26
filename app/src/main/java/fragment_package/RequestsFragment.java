@@ -105,7 +105,7 @@ public class RequestsFragment extends FragmentControl {
         myAdapter= new UserDataRecycleAdapter(getContext(), requestsDataList);
         itemListener = new UserDataRecycleAdapter.RecyclerViewListener() {
             @Override
-            public void onClick(int position) { onItemClick(position); }
+            public void onClick(View v, int position) { onItemClick(v, position); }
         };
         myAdapter.setListener(itemListener);
     }
@@ -146,7 +146,7 @@ public class RequestsFragment extends FragmentControl {
     }
 
     @Override
-    protected void onItemClick(int position){
+    protected void onItemClick(View v, int position){
         goToActivity(requestsDataList.get(position).getID(), new UserProfileActivity());
     }
 }

@@ -110,14 +110,9 @@ public class FriendsFragment extends FragmentControl implements PopupMenu.OnMenu
         myAdapter= new UserDataRecycleAdapter(getContext(), usersDataList);
         itemListener = new UserDataRecycleAdapter.RecyclerViewListener() {
             @Override
-            public void onClick(int position) { onItemClick(position); }
-        };
-        longClickListener = new UserDataRecycleAdapter.RecyclerLongClickListener() {
-            @Override
-            public void onLongClick(View v, int position) {onItemLongClick(v, position);}
+            public void onClick(View v, int position) { onItemClick(v, position); }
         };
         myAdapter.setListener(itemListener);
-        myAdapter.setLongClickListener(longClickListener);
     }
 
     @Override
@@ -148,7 +143,7 @@ public class FriendsFragment extends FragmentControl implements PopupMenu.OnMenu
     }
 
     @Override
-    protected void onItemLongClick(View v , int position){
+    protected void onItemClick(View v , int position){
         showPopupMenu(v, position);
     }
 

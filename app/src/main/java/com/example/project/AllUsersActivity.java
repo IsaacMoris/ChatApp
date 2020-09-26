@@ -66,7 +66,7 @@ public class AllUsersActivity extends AppCompatActivity {
         myAdapter= new UserDataRecycleAdapter(getApplicationContext(), usersDataList);
         itemListener = new UserDataRecycleAdapter.RecyclerViewListener() {
             @Override
-            public void onClick(int position) { onItemViewClick(position); }
+            public void onClick(View v, int position) { onItemViewClick(position); }
         };
         myAdapter.setListener(itemListener);
         

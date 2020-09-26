@@ -108,7 +108,7 @@ public class ChatFragment extends FragmentControl {
         myAdapter= new UserDataRecycleAdapter(getContext(), usersDataList);
         itemListener = new UserDataRecycleAdapter.RecyclerViewListener() {
             @Override
-            public void onClick(int position) { onItemClick(position); }
+            public void onClick(View v, int position) { onItemClick(v, position); }
         };
         myAdapter.setListener(itemListener);
     }
@@ -173,7 +173,7 @@ public class ChatFragment extends FragmentControl {
     }
 
     @Override
-    protected void onItemClick(int position){
+    protected void onItemClick(View v, int position){
         goToActivity(usersDataList.get(position).getID(), new activity_chat());
     }
 }

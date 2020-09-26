@@ -22,7 +22,7 @@ public abstract class FragmentControl extends Fragment {
 
     protected abstract void Initialize();
     protected abstract void retrieveData();
-    protected void onItemClick(int position){};
+    protected void onItemClick(View v, int position){};
     protected void onItemLongClick(View v , int position){}
     protected void goToActivity(String ID, AppCompatActivity Destination){
         Intent newActivity = new Intent(getContext(), Destination.getClass());

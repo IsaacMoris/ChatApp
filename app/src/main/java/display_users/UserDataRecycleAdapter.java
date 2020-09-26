@@ -59,7 +59,7 @@ public class UserDataRecycleAdapter extends RecyclerView.Adapter<UserDataRecycle
         this.listener = listener;
     }
     public interface RecyclerViewListener{
-        void onClick(int position);
+        void onClick(View v, int position);
     }
 
     public void setLongClickListener(RecyclerLongClickListener longClickListener){this.longClickListener = longClickListener;}
@@ -97,7 +97,7 @@ public class UserDataRecycleAdapter extends RecyclerView.Adapter<UserDataRecycle
 
         @Override
         public void onClick(View v) {
-            listener.onClick(getAdapterPosition());
+            listener.onClick(v, getAdapterPosition());
         }
 
         @Override
