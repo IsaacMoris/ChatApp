@@ -102,6 +102,7 @@ public class activity_chat extends AppCompatActivity {
         //LayoutInflater inflater = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         // Emoji Keyboard
         EmojIconActions emojIcon=new EmojIconActions(this,ViewMessageList,chat_message_view,emoji_bttn);
+
         emojIcon.ShowEmojIcon();
         loadMessages();
         if(messageList.size()==0){

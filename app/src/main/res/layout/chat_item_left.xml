@@ -7,12 +7,12 @@
         android:layout_width="40dp"
         android:layout_height="40dp"
         android:id="@+id/profileimage"/>
-    <TextView
+    <hani.momanii.supernova_emoji_library.Helper.EmojiconTextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_toRightOf="@id/profileimage"
-        android:layout_marginLeft="5dp"
-        android:text="hello"
+        android:layout_toEndOf="@id/profileimage"
+        android:layout_marginStart="5dp"
+
         android:padding="8dp"
         android:background="@drawable/background_left"
         android:textSize="18sp"

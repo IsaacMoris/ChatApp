@@ -40,12 +40,12 @@
         app:layout_constraintGuide_begin="20dp"
         app:layout_constraintGuide_percent=".75" />
 
-    <TextView
+    <hani.momanii.supernova_emoji_library.Helper.EmojiconTextView
         android:id="@+id/singleUserName"
         android:layout_width="wrap_content"
         android:layout_height="31dp"
         android:layout_marginTop="4dp"
-        android:text="@string/name"
+
         android:textColor="#0E0E0E"
         android:textSize="18sp"
         android:textStyle="bold"
@@ -54,12 +54,12 @@
         app:layout_constraintStart_toStartOf="@+id/guideline8"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
+    <hani.momanii.supernova_emoji_library.Helper.EmojiconTextView
         android:id="@+id/singleUserStatus"
         android:layout_width="wrap_content"
         android:layout_height="33dp"
         android:layout_marginTop="4dp"
-        android:text="@string/hey_i_am_using_teen_titans"
+
         android:textColor="#372C2C"
         app:layout_constraintEnd_toEndOf="@id/guideline9"
         app:layout_constraintHorizontal_bias="0.0"
