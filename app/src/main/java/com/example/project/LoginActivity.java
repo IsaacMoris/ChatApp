@@ -41,7 +41,7 @@ public class LoginActivity extends AppCompatActivity {
         btnSignIn = findViewById(R.id.buttonLogin);
         tvSignUp = findViewById(R.id.textView);
 
-        mAuthStateListener = new FirebaseAuth.AuthStateListener() {
+/*        mAuthStateListener = new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 FirebaseUser mFirebaseUser = mFirebaseAuth.getCurrentUser();
@@ -54,7 +54,7 @@ public class LoginActivity extends AppCompatActivity {
                     Toast.makeText(LoginActivity.this,"Please Login",Toast.LENGTH_SHORT).show();
                 }
             }
-        };
+        };*/
 
         btnSignIn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -108,7 +108,7 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        mFirebaseAuth.addAuthStateListener(mAuthStateListener);
+//        mFirebaseAuth.addAuthStateListener(mAuthStateListener);
     }
     public void Alpha (Button bttn){
         Alpha= new AlphaAnimation(1.0f,0.7f);

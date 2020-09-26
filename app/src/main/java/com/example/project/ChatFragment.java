@@ -124,6 +124,7 @@ public class ChatFragment extends Fragment {
                     userDatabase.child(dataSnapshot.getKey()).addValueEventListener(new ValueEventListener() {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot snapshot) {
+                            usersDataList.clear();
                             //Get User Data
                             final UserDataModel user = snapshot.getValue(UserDataModel.class);
                                     user.setID(snapshot.getKey());
@@ -134,6 +135,7 @@ public class ChatFragment extends Fragment {
                                         lastMessage.addChildEventListener(new ChildEventListener() {
                                             @Override
                                             public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+
                                                 Message message = snapshot.getValue(Message.class);
                                                 user.setDate(String.valueOf(message.getTime()) );
 
@@ -146,6 +148,7 @@ public class ChatFragment extends Fragment {
                                                 //sort User based on chat time
                                                 Collections.sort(usersDataList);
                                                 Collections.reverse(usersDataList);
+
                                                 chatFriendsList.setAdapter(myAdapter);
                                             }
                                             @Override

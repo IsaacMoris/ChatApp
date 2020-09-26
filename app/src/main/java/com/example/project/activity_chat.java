@@ -127,7 +127,7 @@ loadUserData(mChatuser);
                 //userNameText.setText("");
             }
         });
-       back_button.setOnClickListener(new View.OnClickListener() {
+       /*back_button.setOnClickListener(new View.OnClickListener() {
            @Override
            public void onClick(View view) {
                Intent intent;
@@ -136,7 +136,7 @@ loadUserData(mChatuser);
                else   intent=new Intent(activity_chat.this,ChatFragment.class);
                startActivity(intent);
            }
-       });
+       });*/
 
     }
 

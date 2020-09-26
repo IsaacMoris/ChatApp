@@ -29,7 +29,7 @@ public class HomeActivity extends AppCompatActivity {
 
         mFireBaseAuth = FirebaseAuth.getInstance();
         if(mFireBaseAuth.getCurrentUser() == null){
-            startActivity(new Intent(HomeActivity.this, LoginActivity.class));
+            startActivity(new Intent(HomeActivity.this, StartUp.class));
             finish();
         }
 

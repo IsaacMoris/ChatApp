@@ -194,28 +194,6 @@ public class ProfileActivity extends AppCompatActivity {
         DialogEdit.show();
     }
 
-    private void showBottomPickPhoto() {
-        View view = getLayoutInflater().inflate(R.layout.bottomsheet_editphoto, null);
-
-        view.findViewById(R.id.bottomsheet_photo_ln_gallery).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                openGallery();
-                DialogEdit.dismiss();
-            }
-        });
-        DialogEdit = new BottomSheetDialog(this);
-        DialogEdit.setContentView(view);
-
-        DialogEdit.setOnDismissListener(new DialogInterface.OnDismissListener() {
-            @Override
-            public void onDismiss(DialogInterface dialogInterface) {
-                DialogEdit = null;
-            }
-        });
-        DialogEdit.show();
-    }
-
 
     private void updateName(String uName) {
         muserDatabase.child("name").setValue(uName).addOnSuccessListener(new OnSuccessListener<Void>() {
@@ -292,28 +270,6 @@ public class ProfileActivity extends AppCompatActivity {
 
                     }
                 });
-
-
-             /*   filepath.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                    @Override
-                    public void onSuccess(Uri uri) {
-                        String download_Url = uri.toString();
-
-                        muserDatabase.child("image").setValue(download_Url).addOnCompleteListener(new OnCompleteListener<Void>() {
-                            @Override
-                            public void onComplete(@NonNull Task<Void> task) {
-                                if (task.isSuccessful()) {
-                                    progressDialog.dismiss();
-                                    Toast.makeText(ProfileActivity.this, "Success Uploading.", Toast.LENGTH_LONG).show();
-
-                                } else {
-                                    Toast.makeText(ProfileActivity.this, "Error in uploading.", Toast.LENGTH_LONG).show();
-                                    progressDialog.dismiss();
-                                }
-                            }
-                        });
-                    }
-                });*/
 
             } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
                 Exception error = result.getError();
