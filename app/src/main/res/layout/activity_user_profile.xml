@@ -57,7 +57,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Display Name"
-                        android:textColor="@android:color/black"
+                        android:textColor="#FF223343"
                         android:textSize="30sp" />
                 </LinearLayout>
             </LinearLayout>
@@ -86,37 +86,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Status"
-                        android:textColor="@android:color/black"
-                        android:textSize="30sp" />
-
-                </LinearLayout>
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:padding="20dp">
-
-                <ImageView
-                    android:layout_width="35dp"
-                    android:layout_height="match_parent"
-                    android:src="@drawable/outline_account_circle_24"
-                    app:tint="@color/colorPrimary" />
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical"
-                    android:paddingStart="15dp"
-                    android:paddingEnd="15dp">
-
-                    <TextView
-                        android:id="@+id/totalFriends"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Total Friend"
-                        android:textColor="@android:color/black"
+                        android:textColor="#FF223343"
                         android:textSize="30sp" />
 
                 </LinearLayout>
@@ -124,7 +94,7 @@
 
 
             <LinearLayout
-                android:layout_width="match_parent"
+                android:layout_width="244dp"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:padding="20dp">
@@ -135,20 +105,16 @@
                     android:src="@drawable/ic_baseline_person_add_24"
                     app:tint="@color/colorPrimary" />
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical"
-                    android:paddingStart="15dp"
-                    android:paddingEnd="15dp">
+                <Button
+                    android:id="@+id/sendRequestBtn"
+                    style="@style/Widget.MaterialComponents.Button.TextButton.Icon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:text="Send Friend Request"
 
-                    <Button
-                        android:id="@+id/sendRequestBtn"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_horizontal"
-                        android:text="Send Friend Request" />
-                </LinearLayout>
+                    app:icon="@drawable/ic_baseline_person_add_24" />
+
             </LinearLayout>
 
             <LinearLayout
@@ -156,8 +122,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                tools:visibility="invisible"
-                android:padding="20dp">
+                android:padding="20dp"
+                android:visibility="invisible">
 
                 <ImageView
                     android:layout_width="35dp"
@@ -165,22 +131,17 @@
                     android:src="@drawable/ic_baseline_cancel_24"
                     app:tint="@color/colorPrimary" />
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical"
-                    android:paddingStart="15dp"
-                    android:paddingEnd="15dp">
+                <Button
+                    android:id="@+id/rejectRequestBtn"
 
-                    <Button
-                        android:id="@+id/rejectRequestBtn"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_horizontal"
-                        android:text="Reject Request"
+                    style="@style/Widget.MaterialComponents.Button.TextButton.Icon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:text="Reject Request"
 
-                        android:visibility="visible" />
-                </LinearLayout>
+                    android:visibility="visible" />
+
             </LinearLayout>
         </LinearLayout>
 

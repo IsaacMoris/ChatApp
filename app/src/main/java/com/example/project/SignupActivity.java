@@ -4,10 +4,16 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.ActivityOptions;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.transition.ChangeBounds;
+import android.transition.Explode;
+import android.transition.Fade;
+import android.transition.Slide;
+import android.util.Pair;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -18,6 +24,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputLayout;
+import com.google.android.material.transition.platform.MaterialFade;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -48,6 +55,8 @@ public class SignupActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+// set an exit transition
+        getWindow().setExitTransition(new MaterialFade());
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_signup);
 
@@ -125,7 +134,8 @@ public class SignupActivity extends AppCompatActivity {
             public void onClick(View v)
             {
                 Intent i = new Intent(SignupActivity.this , LoginActivity.class);
-                startActivity(i);
+                startActivity(i,
+                        ActivityOptions.makeSceneTransitionAnimation(SignupActivity.this).toBundle());
             }
         });
 
@@ -181,7 +191,6 @@ public class SignupActivity extends AppCompatActivity {
         signin = findViewById(R.id.textView);
         name = findViewById(R.id.TextName);
         status=findViewById(R.id.TextStatus);
-        name.requestFocus();
         ImageStorage = FirebaseStorage.getInstance().getReference();
     }
     @Override
@@ -209,5 +218,11 @@ public class SignupActivity extends AppCompatActivity {
                 Exception error = result.getError();
             }
         }
+    }
+    @Override
+    public void onBackPressed()
+    {
+        Intent intent = new Intent(this,StartUp.class);
+        startActivity(intent);
     }
 }

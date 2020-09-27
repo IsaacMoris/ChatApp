@@ -29,7 +29,7 @@ import java.util.Date;
 public class UserProfileActivity extends AppCompatActivity {
 
     private ImageView mProfileImg;
-    private TextView mProfileName, mProfileStatus, mProfileCount;
+    private TextView mProfileName, mProfileStatus;
     private Button mSendRequestBtn, mRejectRequestBtn;
 
     private int mRelationState; // 0 is not friends
@@ -59,7 +59,6 @@ public class UserProfileActivity extends AppCompatActivity {
         mProfileImg = (ImageView)findViewById(R.id.profileImg);
         mProfileName = (TextView)findViewById(R.id.profileName);
         mProfileStatus = (TextView)findViewById(R.id.profileStatus);
-        mProfileCount = (TextView)findViewById(R.id.totalFriends);
         mSendRequestBtn = (Button)findViewById(R.id.sendRequestBtn);
         mRejectRequestBtn = (Button)findViewById(R.id.rejectRequestBtn);
         findViewById(R.id.lnrejectButton).setVisibility(View.INVISIBLE);
@@ -76,9 +75,9 @@ public class UserProfileActivity extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 String name = snapshot.child("name").getValue().toString();
                 String status = snapshot.child("status").getValue().toString();
-
                 mProfileName.setText(name);
                 mProfileStatus.setText(status);
+
                 Picasso.get().load((String)snapshot.child("image").getValue()).into(mProfileImg);
 
                 mFriendReqDB.child(mCurrentUser.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {

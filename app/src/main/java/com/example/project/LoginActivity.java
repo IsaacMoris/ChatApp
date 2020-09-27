@@ -3,8 +3,14 @@ package com.example.project;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.ActivityOptions;
 import android.content.Intent;
 import android.os.Bundle;
+import android.transition.ChangeBounds;
+import android.transition.Explode;
+import android.transition.Fade;
+import android.transition.Slide;
+import android.util.Pair;
 import android.view.View;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
@@ -17,6 +23,7 @@ import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputLayout;
+import com.google.android.material.transition.platform.MaterialFade;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -32,6 +39,8 @@ public class LoginActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        // set an exit transition
+        getWindow().setExitTransition(new MaterialFade());
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
@@ -100,7 +109,8 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intSignUp = new Intent(LoginActivity.this, SignupActivity.class);
-                startActivity(intSignUp);
+                startActivity(intSignUp,
+                        ActivityOptions.makeSceneTransitionAnimation(LoginActivity.this).toBundle());
             }
         });
     }
@@ -116,5 +126,10 @@ public class LoginActivity extends AppCompatActivity {
         Alpha.setRepeatCount(1);
         Alpha.setRepeatMode(Animation.REVERSE);
         bttn.startAnimation(Alpha);
+    }
+    public void onBackPressed()
+    {
+        Intent intent = new Intent(this,StartUp.class);
+        startActivity(intent);
     }
 }

@@ -80,7 +80,7 @@ public class UserDataRecycleAdapter extends RecyclerView.Adapter<UserDataRecycle
             name = itemView.findViewById(R.id.singleUserName);
             status = itemView.findViewById(R.id.singleUserStatus);
             itemView.setOnClickListener(this);
-            itemView.setOnLongClickListener(this);
+       //     itemView.setOnLongClickListener(this);
         }
 
         public void setProfileImage(CircleImageView profileImage) {
