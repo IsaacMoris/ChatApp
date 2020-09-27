@@ -50,7 +50,7 @@ public class SignupActivity extends AppCompatActivity {
 
     private StorageReference ImageStorage;
 
-    private  Uri resultUri ;
+    private  Uri resultUri ; //image location
     private FirebaseUser current_user ;
 
     @Override
@@ -152,7 +152,7 @@ public class SignupActivity extends AppCompatActivity {
         hashMap.put("image" , "Empty") ;
         userDatabase.setValue(hashMap);
 
-        if(!Uri.EMPTY.equals(uriresult))
+        if(!Uri.EMPTY.equals(uriresult)) //find image
         {
 
             StorageReference filepath = ImageStorage.child("profile_images").child(uid + "jpg");
