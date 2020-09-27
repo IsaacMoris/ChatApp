@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="300dp"
+    xmlns:emojicon="http://schemas.android.com/apk/res-auto"
+    android:layout_width="300dp"
     android:layout_height="wrap_content"
     android:padding="8dp">
     <de.hdodenhof.circleimageview.CircleImageView
@@ -12,10 +13,10 @@
         android:layout_height="wrap_content"
         android:layout_toEndOf="@id/profileimage"
         android:layout_marginStart="5dp"
-
+        emojicon:emojiconSize="35dip"
         android:padding="8dp"
         android:background="@drawable/background_left"
-        android:textSize="18sp"
+        android:textSize="25sp"
         android:id="@+id/show_message"
 
         />

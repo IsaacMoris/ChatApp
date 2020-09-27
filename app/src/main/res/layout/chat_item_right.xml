@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:emojicon="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -20,7 +20,8 @@
         android:background="@drawable/background_right"
         android:padding="8dp"
         android:textColor="#fff"
-        android:textSize="18sp"
+        emojicon:emojiconSize="35dip"
+        android:textSize="25sp"
 
         />
 
