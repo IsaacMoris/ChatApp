@@ -116,6 +116,7 @@ public class RequestsFragment extends FragmentControl {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 requestsDataList.clear();
+                myAdapter.notifyDataSetChanged();
 
                 for(final DataSnapshot dataSnapshot: snapshot.getChildren()){
                     userDatabase.child(dataSnapshot.getKey()).addValueEventListener(new ValueEventListener() {

@@ -126,6 +126,7 @@ public class ChatFragment extends FragmentControl {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot snapshot) {
                             usersDataList.clear();
+                            myAdapter.notifyDataSetChanged();
                             //Get User Data
                             final UserDataModel user = snapshot.getValue(UserDataModel.class);
                             user.setID(snapshot.getKey());

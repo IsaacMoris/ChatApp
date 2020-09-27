@@ -75,6 +75,7 @@ public class AllUsersActivity extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 usersDataList.clear();
+                myAdapter.notifyDataSetChanged();
                 for(final DataSnapshot dataSnapshot : snapshot.getChildren()){
                     final UserDataModel user = dataSnapshot.getValue(UserDataModel.class);
                     if(!dataSnapshot.getKey().equals(userId)){

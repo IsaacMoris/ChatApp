@@ -121,6 +121,7 @@ public class FriendsFragment extends FragmentControl implements PopupMenu.OnMenu
             @Override
             public void onDataChange(@NonNull final DataSnapshot friendSnapshot) {
                 usersDataList.clear();
+                myAdapter.notifyDataSetChanged();
 
                 for(final DataSnapshot dataSnapshot: friendSnapshot.getChildren()){
                     userDatabase.child(dataSnapshot.getKey()).addValueEventListener(new ValueEventListener() {
@@ -128,7 +129,7 @@ public class FriendsFragment extends FragmentControl implements PopupMenu.OnMenu
                         public void onDataChange(@NonNull DataSnapshot snapshot) {
                             UserDataModel user = snapshot.getValue(UserDataModel.class);
                             user.setID(snapshot.getKey());
-                            user.setStatus(dataSnapshot.child("date").getValue().toString());
+                            user.setStatus("Friend Since: "+dataSnapshot.child("date").getValue().toString());
                             usersDataList.add(user);
                             friendsViewList.setAdapter(myAdapter);
                         }
