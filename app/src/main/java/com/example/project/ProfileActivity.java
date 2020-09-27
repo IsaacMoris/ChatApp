@@ -234,7 +234,7 @@ public class ProfileActivity extends AppCompatActivity {
             if (resultCode == RESULT_OK) {
 
                 progressDialog = new ProgressDialog(ProfileActivity.this);
-                progressDialog.setTitle("Uloading Image...");
+                progressDialog.setTitle("Uploading Image...");
                 progressDialog.setMessage("Please Wait  while we upload and process the image.");
                 progressDialog.setCanceledOnTouchOutside(false);
                 progressDialog.show();

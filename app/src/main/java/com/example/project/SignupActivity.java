@@ -13,6 +13,7 @@ import android.transition.ChangeBounds;
 import android.transition.Explode;
 import android.transition.Fade;
 import android.transition.Slide;
+import android.util.Log;
 import android.util.Pair;
 import android.view.View;
 import android.widget.Button;
@@ -50,7 +51,7 @@ public class SignupActivity extends AppCompatActivity {
 
     private StorageReference ImageStorage;
 
-    private  Uri resultUri ; //image location
+    private  Uri resultUri=Uri.EMPTY ; //image location
     private FirebaseUser current_user ;
 
     @Override
@@ -59,6 +60,8 @@ public class SignupActivity extends AppCompatActivity {
         getWindow().setExitTransition(new MaterialFade());
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_signup);
+
+        Log.i("bug", String.valueOf(Uri.EMPTY.equals(resultUri)));
 
         intitalize();
         uImage = findViewById(R.id.uimage);
@@ -140,7 +143,7 @@ public class SignupActivity extends AppCompatActivity {
         });
 
     }
-    void ADDtoDataBase(String name , String status , Uri uriresult)
+    void ADDtoDataBase(String name , String status , Uri resultUri)
     {
         current_user=FirebaseAuth.getInstance().getCurrentUser();
         String uid=current_user.getUid() ;
@@ -148,11 +151,12 @@ public class SignupActivity extends AppCompatActivity {
 
         HashMap<String , String> hashMap = new HashMap<>() ;
         hashMap.put("name" , name);
-        hashMap.put("status" , status); ;
+        hashMap.put("status" , status);
         hashMap.put("image" , "Empty") ;
         userDatabase.setValue(hashMap);
 
-        if(!Uri.EMPTY.equals(uriresult)) //find image
+
+        if(!Uri.EMPTY.equals(resultUri)) //find image
         {
 
             StorageReference filepath = ImageStorage.child("profile_images").child(uid + "jpg");

@@ -120,12 +120,14 @@ public class ChatFragment extends FragmentControl {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 //Clearing List for not repeating
                 usersDataList.clear();
+                myAdapter.notifyDataSetChanged();
 
                 for(final DataSnapshot dataSnapshot: snapshot.getChildren()){
                     userDatabase.child(dataSnapshot.getKey()).addValueEventListener(new ValueEventListener() {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot snapshot) {
-                            usersDataList.clear();
+                            //usersDataList.clear();
+                            deleteOlderUser(snapshot.getKey());
                             myAdapter.notifyDataSetChanged();
                             //Get User Data
                             final UserDataModel user = snapshot.getValue(UserDataModel.class);
@@ -176,5 +178,14 @@ public class ChatFragment extends FragmentControl {
     @Override
     protected void onItemClick(View v, int position){
         goToActivity(usersDataList.get(position).getID(), new activity_chat());
+    }
+
+    private void deleteOlderUser(String key){
+        for(int i=0; i<usersDataList.size(); i++){
+            if(usersDataList.get(i).getID().equals(key)){
+                usersDataList.remove(i);
+                return;
+            }
+        }
     }
 }
